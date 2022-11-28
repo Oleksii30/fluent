@@ -1,3 +1,8 @@
+:root {
+  --header_height: 80px;
+}
+
+
 html,
 body {
   padding: 0;
