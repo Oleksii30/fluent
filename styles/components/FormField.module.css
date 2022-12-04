@@ -1,0 +1,14 @@
+.label {
+    margin-bottom: 5px;
+}
+
+.field {
+    border-radius: 5px;
+    border: 1px solid var(--medium_grey);
+    padding: 5px;
+    margin-bottom: 20px;
+}
+
+.field:focus {
+    outline: none;
+}

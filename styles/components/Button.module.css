@@ -1,0 +1,33 @@
+.submit_container {
+    position: relative;
+    border: 2px solid var(--black);
+    color: var(--black);
+    border-radius: 20px;
+    width: fit-content;
+    padding: 5px 15px;
+    font-weight: 700;
+    cursor: pointer;
+    overflow: hidden;
+    transition: all 1s;
+}
+
+.submit_container::before {
+    content: '';
+    position: absolute;
+    top: -3px;
+    left: -120%;
+    width: 120%;
+    height: 120%;
+    background: var(--light_red);
+    border-radius: 20px;
+    transition: all 1s;
+    z-index: -1;
+}
+
+.submit_container:hover {
+    color: var(--black);
+}
+
+.submit_container:hover::before {
+    left: -10%;
+}
