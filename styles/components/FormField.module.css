@@ -3,12 +3,22 @@
 }
 
 .field {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+
+.input {
     border-radius: 5px;
     border: 1px solid var(--medium_grey);
     padding: 5px;
-    margin-bottom: 20px;
+    margin-bottom: 5px;
 }
 
-.field:focus {
+.input:focus {
     outline: none;
+}
+
+.error_message {
+    color: red;
 }

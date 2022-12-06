@@ -7,8 +7,8 @@ type Props = {
 export default function SubmitButton({ label }:Props) {
 
     return (
-        <div className={styles.submit_container}>
+        <button className={styles.submit_container} type='submit'>
             {label}
-        </div>
+        </button>
     )
 }
