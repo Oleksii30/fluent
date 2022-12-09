@@ -41,21 +41,21 @@ export default function SignUp() {
             type='text'
             register={register}
             name='email'
-            errors={errors}
+            error={errors.email}
           />
           <FormField
             label='Password'
             type='password'
             register={register}
             name='password'
-            errors={errors}
+            error={errors.password}
           />
           <FormField
             label='Confirm password'
             type='password'
             register={register}
             name='confirmPassword'
-            errors={errors}
+            error={errors.confirmPassword}
           />
           <SubmitButton label='Submit'/>
         </form>

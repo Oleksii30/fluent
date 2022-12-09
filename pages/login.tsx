@@ -28,19 +28,19 @@ export default function LogIn() {
         </h4>
         <form className={styles.form_container} onSubmit={handleSubmit(onSubmit)}>
           <FormField
-            label='Email'
-            type='text'
-            register={register}
-            name='email'
-            errors={errors}
-          />
-          <FormField
-            label='Password'
-            type='password'
-            register={register}
-            name='password'
-            errors={errors}
-          />
+              label='Email'
+              type='text'
+              register={register}
+              name='email'
+              error={errors.email}
+            />
+            <FormField
+              label='Password'
+              type='password'
+              register={register}
+              name='password'
+              error={errors.password}
+            />
           <SubmitButton label='Submit'/>
         </form>
       </main>

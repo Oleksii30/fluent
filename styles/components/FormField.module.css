@@ -3,16 +3,18 @@
 }
 
 .field {
+    position: relative;
     display: flex;
     flex-direction: column;
-    margin-bottom: 15px;
+    padding-bottom: 12px;
+    margin-bottom: 7px;
 }
 
 .input {
     border-radius: 5px;
     border: 1px solid var(--medium_grey);
     padding: 5px;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
 }
 
 .input:focus {
@@ -20,5 +22,9 @@
 }
 
 .error_message {
+    position: absolute;
+    left: 0;
+    bottom: 0;
     color: red;
+    font-size: 14px;
 }

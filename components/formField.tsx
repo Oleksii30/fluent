@@ -1,7 +1,4 @@
-// import { Path, UseFormRegister, FieldErrorsImpl} from "react-hook-form"
-
-// import { ISignup } from "interfaces/signup"
-// import { ILogin } from "interfaces/login"
+import { Path, UseFormRegister, FieldError} from "react-hook-form"
 
 import styles from 'styles/components/FormField.module.css'
 
@@ -9,16 +6,16 @@ type Props = {
     label: string,
     type: string,
     name: any,
-    register: any,
-    errors: any
+    register: UseFormRegister<any>,
+    error?: FieldError
 }
 
-export default function FormField({label, type, name, errors, register}:Props) {
+export default function FormField({label, type, name, error, register}:Props) {
     return (
         <div className={styles.field}>
             <label htmlFor={name} className={styles.label}>{label}</label>
             <input className={styles.input} type={type} {...register(name)}/>
-            <span className={styles.error_message}>{errors[name]?.message}</span>
+            <span className={styles.error_message}>{error?.message}</span>
         </div>
     )
 }
