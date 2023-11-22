@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import Header from 'components/header'
 import FormField from 'components/formField'
 import SubmitButton from 'components/buttons/submit'
@@ -5,6 +6,8 @@ import { useForm, SubmitHandler } from "react-hook-form"
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from "yup";
 import { ISignup } from 'interfaces/signup.interface'
+import { useAuthDispatch, signUpUser, useAuthState } from 'context/auth'
+import { useRouter } from 'next/navigation'
 
 import styles from 'styles/pages/Form.module.css'
 
@@ -23,10 +26,21 @@ const schema = yup.object({
 }).required();
 
 export default function SignUp() {
+  const authDispatch = useAuthDispatch()
+  const { isLoggedIn } = useAuthState()
+  const router = useRouter()
   const { register, handleSubmit, formState: { errors } } = useForm<ISignup>({
     resolver: yupResolver(schema)
   });
-  const onSubmit: SubmitHandler<ISignup> = data => console.log(data)
+  const onSubmit: SubmitHandler<ISignup> = data => {
+    signUpUser(authDispatch, data)
+  }
+
+  useEffect(() => {
+    if(isLoggedIn) {
+      router.replace('/create')
+    }
+  }, [isLoggedIn, router])
 
   return (
     <div className={styles.container}>
@@ -57,7 +71,9 @@ export default function SignUp() {
             name='confirmPassword'
             error={errors.confirmPassword}
           />
-          <SubmitButton label='Submit'/>
+          <div style={{marginTop: 20}}>
+            <SubmitButton label='Submit'/>
+          </div>
         </form>
       </main>
     </div>

@@ -14,7 +14,7 @@ export default function Home() {
       <Header/>
       <main className={styles.main}>
         <h1 className={styles.title}>
-          Welcome to Fluent
+          Welcome to Fluently
         </h1>
       </main>
     </div>

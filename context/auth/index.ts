@@ -2,6 +2,7 @@ import { useContext } from "react";
 
 import { AuthProvider } from "./AuthProvider";
 import { AuthStateContext, AuthDispatchContext } from "./Context";
+import { signUpUser, login, getSession, logOut } from "./actions";
 
 
 function useAuthState() {
@@ -30,4 +31,8 @@ export {
   AuthProvider,
   useAuthState,
   useAuthDispatch,
+  signUpUser,
+  login,
+  getSession,
+  logOut
 };

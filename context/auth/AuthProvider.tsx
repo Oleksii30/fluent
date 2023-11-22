@@ -4,7 +4,7 @@ import { AuthStateContext, AuthDispatchContext } from "./Context"
 import authReducer, { initialState } from "./reducer"
 
 type Props = {
-    children: JSX.Element,
+  children: JSX.Element,
 };
 
 export function AuthProvider({ children }:Props) {
