@@ -5,16 +5,11 @@ import IconButton from 'components/buttons/icon';
 import SubmitButton from 'components/buttons/submit';
 import { useForm, useFieldArray } from "react-hook-form";
 import { PlusCircle, X, ArrowRightCircle } from 'react-feather';
+import useStore from 'store/lists';
+import { WordInput } from 'interfaces/list.interface';
+import { useAuthState } from 'context/auth'
 
-
-import styles from 'styles/pages/Create.module.css'
-
-type WordInput = {
-  id: string,
-  word: string,
-  translations: Array<string>,
-  associations: Array<string>
-}
+import styles from 'styles/pages/Create.module.css';
 
 export default function Create() {
   const { control, register, handleSubmit } = useForm();
@@ -23,6 +18,10 @@ export default function Create() {
     name: "list",
   });
 
+  const { user } = useAuthState()
+
+  const createList = useStore((state: any) => state.create);
+
   const [currentFocus, setCurrentFocus] = useState('');
 
   const submitForm = (data: any) => {
@@ -30,10 +29,13 @@ export default function Create() {
       return
     }
 
-    if(!data.header){
-      data.header = Date.now();
+    const body = {
+      ...data,
+      userId: user.username,
+      header: data.header ? data.header : Date.now()
     }
-    console.log(data)
+
+    createList(body);
   }
 
   const handleAddField = () => {
@@ -74,14 +76,6 @@ export default function Create() {
     update(index, { ...field, word: fieldValue});
   }
 
-  const disableArrowButtonTranslations = (field: WordInput) => {
-    const translationsLength = field.translations.length;
-    if(!translationsLength){
-      return false
-    }
-    return Boolean(!field.translations[translationsLength - 1])
-  }
-
   return (
     <div className={styles.container}>
       <Head>
@@ -102,6 +96,13 @@ export default function Create() {
               placeholder='Please enter new list name'
             />
           </div>
+          <select
+            {...register(`language`)}
+            className={styles.select_input}
+          >
+            <option value='en'>English</option>
+            <option value='es'>Spanish</option>
+          </select>
           {(fields as Array<WordInput>).map((field, index) => (
               <div key={field.id} className={styles.word_field_container}>
                 <div className={styles.vertical_container}>

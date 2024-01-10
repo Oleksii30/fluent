@@ -1,9 +1,14 @@
-import Head from 'next/head'
-import Header from 'components/header'
+import Link from 'next/link';
+import Head from 'next/head';
+import Header from 'components/header';
+import { useAuthState } from 'context/auth';
+import { Routes } from 'enums/routes';
 
-import styles from 'styles/pages/Home.module.css'
+import styles from 'styles/pages/Home.module.css';
 
 export default function Home() {
+  const { isLoggedIn } = useAuthState();
+
   return (
     <div className={styles.container}>
       <Head>
@@ -16,6 +21,9 @@ export default function Home() {
         <h1 className={styles.title}>
           Welcome to Fluently
         </h1>
+        {isLoggedIn &&
+          <Link href={Routes.LISTS}>Go to lists</Link>
+        }
       </main>
     </div>
   )
