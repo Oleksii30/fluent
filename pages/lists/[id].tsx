@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Header from 'components/header';
+import ListForm from 'components/listForm';
 import useStore from 'store/lists';
 import { useAuthState } from 'context/auth';
 import { WordInput } from 'interfaces/list.interface';
@@ -16,6 +17,9 @@ export default function List() {
   const currentList = useStore((state: any) => state.currentList);
 
   useEffect(() => {
+    if(!user || !id){
+      return
+    }
     getListById(user.username, id)
   }, [id, user, getListById])
 
@@ -57,6 +61,9 @@ export default function List() {
             </div>
           )}
         </div>
+      }
+      {
+        currentList && <ListForm item={currentList}/>
       }
     </div>
   )

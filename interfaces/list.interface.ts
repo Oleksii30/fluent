@@ -1,5 +1,5 @@
 export type WordInput = {
-  id: string,
+  id?: string,
   word: string,
   translations: Array<string>,
   associations: Array<string>
