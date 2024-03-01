@@ -1,5 +1,3 @@
-import { useState } from 'react';
-import Header from 'components/header';
 import EditableInput, { FieldTypes } from './editableInput';
 import IconButton from 'components/buttons/icon';
 import { useForm, useFieldArray } from "react-hook-form";
@@ -11,15 +9,17 @@ import { useAuthState } from 'context/auth';
 import styles from 'styles/components/ListForm.module.css';
 
 type Props = {
-  item: IList,
+  item?: IList,
 }
 
+const listId = Date.now();
+
 export default function ListForm({ item,  }:Props) {
-  const { control, register, handleSubmit, setFocus, getValues } = useForm({
+  const { control, register, handleSubmit, setFocus, getValues, setValue } = useForm({
     defaultValues:{
-      header: item.header,
-      language: item.language,
-      list: item.list
+      header: item?.header || '',
+      language: item?.language || 'en',
+      list: item?.list || []
     }
   });
   const { fields, append, remove, update } = useFieldArray({
@@ -27,11 +27,14 @@ export default function ListForm({ item,  }:Props) {
     name: "list",
   });
 
+  const revertFieldValue = (fieldName:any, value:string) => {
+    setValue(fieldName, value)
+  }
+
   const { user } = useAuthState()
 
+  const updateList = useStore((state: any) => state.update);
   const createList = useStore((state: any) => state.create);
-
-  const [currentFocus, setCurrentFocus] = useState('');
 
   const submitForm = (data: any) => {
     if(!data.list.length){
@@ -41,55 +44,59 @@ export default function ListForm({ item,  }:Props) {
     const body = {
       ...data,
       userId: user.username,
-      header: data.header ? data.header : Date.now()
+      header: data.header ? data.header : Date.now(),
+      createdAt: item?.createdAt || listId
     }
 
-    console.log(body)
+    item ? updateList(body) : createList(body);
 
-    //createList(body);
   }
 
   const handleAddField = () => {
-    append({ word: '', translations: [''], associations: [''] });
+    append({ word: '', translations: [], associations: [] });
   }
 
   const handleRemoveField = (index:number) => {
     remove(index)
   }
 
-  const handleAddTranslation = (index: number, field: WordInput) => {
-      update(index, { ...field, translations: [... field.translations, ''] });
+  const handleAddTranslation = (index: number) => {
+    const field = getValues().list[index];
+    update(index, { ...field, translations: [... field.translations, ''] });
   }
 
-  const handleRemoveTranslations = (translationIndex: number, index: number, field: WordInput) => {
+  const handleRemoveTranslations = (translationIndex: number, index: number) => {
+    const field = getValues().list[index];
     const head = field.translations.slice(0, translationIndex);
     const tail = field.translations.slice(translationIndex+1);
     const updatedTranslations = head.concat(tail);
     update(index, { ...field, translations: updatedTranslations });
   }
 
-  const handleRemoveAssociations = (associationIndex: number, index: number, field: WordInput) => {
+  const handleRemoveAssociations = (associationIndex: number, index: number) => {
+    const field = getValues().list[index];
     const head = field.associations.slice(0, associationIndex);
     const tail = field.associations.slice(associationIndex+1);
     const updatedAssociations = head.concat(tail);
     update(index, { ...field, associations: updatedAssociations });
   }
 
-  const handleAddAssociation = (index: number, field: WordInput) => {
+  const handleAddAssociation = (index: number) => {
+    const field = getValues().list[index];
     update(index, { ...field, associations: [... field.associations, ''] })
   }
 
-  const handleFieldFocus = (field: string) => {
-    setCurrentFocus(field);
-  }
+  const handleChangeLanguage = (event:any) => {
+    const values = getValues();
+    const data = {
+      ...values,
+      language: event.target.value
+    }
 
-  const handleWordChange = (fieldValue: string, field: WordInput, index: number) => {
-    update(index, { ...field, word: fieldValue});
+    submitForm(data);
   }
 
   return (
-    <div className={styles.container}>
-      <Header/>
       <main className={styles.main}>
         <form onSubmit={handleSubmit((data) => submitForm(data))}>
           <div style={{marginBottom: 30}}>
@@ -99,11 +106,14 @@ export default function ListForm({ item,  }:Props) {
               setFocus={setFocus}
               submitForm={submitForm}
               getValues={getValues}
+              revertFieldValue={revertFieldValue}
+              placeholder='list name'
             />
           </div>
           <select
             {...register(`language`)}
             className={styles.select_input}
+            onChange={handleChangeLanguage}
           >
             <option value='en'>English</option>
             <option value='es'>Spanish</option>
@@ -121,6 +131,8 @@ export default function ListForm({ item,  }:Props) {
                       onRemove={()=>handleRemoveField(index)}
                       index={index}
                       type={FieldTypes.WORD}
+                      revertFieldValue={revertFieldValue}
+                      placeholder='new word'
                     />
                   </div>
                   <div className={styles.horizontal_container}>
@@ -133,13 +145,15 @@ export default function ListForm({ item,  }:Props) {
                           setFocus={setFocus}
                           submitForm={submitForm}
                           getValues={getValues}
-                          onRemove={() => handleRemoveTranslations(translationIndex, index, field)}
+                          onRemove={() => handleRemoveTranslations(translationIndex, index)}
                           index={index}
                           type={FieldTypes.ADDITIONAL}
+                          revertFieldValue={revertFieldValue}
+                          placeholder='translation'
                         />
                       </div>
                     ))}
-                    <IconButton onClick={() => handleAddTranslation(index, field)}>
+                    <IconButton size={30} onClick={() => handleAddTranslation(index)}>
                       <ArrowRightCircle size={30}/>
                     </IconButton>
                   </div>
@@ -147,25 +161,29 @@ export default function ListForm({ item,  }:Props) {
                     <span className={styles.additional_label}>Associations:</span>
                     {field.associations.map((association, associationIndex) => (
                       <div key={association} className={styles.additional_input_container}>
-                        <input
-                          className={styles.additional_input}
-                          {...register(`list.${index}.associations.${associationIndex}`)}
-                          onFocus={() => handleFieldFocus(`list.${index}.associations.${associationIndex}`)}
-                          autoFocus={currentFocus === `list.${index}.associations.${associationIndex}`}
+                        <EditableInput
+                          register={register}
+                          fieldName={`list.${index}.associations.${associationIndex}`}
+                          setFocus={setFocus}
+                          submitForm={submitForm}
+                          getValues={getValues}
+                          onRemove={() => handleRemoveAssociations(associationIndex, index)}
+                          index={index}
+                          type={FieldTypes.ADDITIONAL}
+                          revertFieldValue={revertFieldValue}
+                          placeholder='association'
                         />
-                        <IconButton onClick={() => handleRemoveAssociations(associationIndex, index, field)}><X size={20}/></IconButton>
                       </div>
                     ))}
-                    <IconButton onClick={() => handleAddAssociation(index, field)}><ArrowRightCircle size={30}/></IconButton>
+                    <IconButton size={30} onClick={() => handleAddAssociation(index)}><ArrowRightCircle size={30}/></IconButton>
                   </div>
                 </div>
               </div>
             ))}
           <div className={styles.icon_button_container}>
-            <IconButton onClick={handleAddField}><PlusCircle size={50}/></IconButton>
+            <IconButton size={50} onClick={handleAddField}><PlusCircle size={50}/></IconButton>
           </div>
         </form>
       </main>
-    </div>
   )
 }

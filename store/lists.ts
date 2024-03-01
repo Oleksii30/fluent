@@ -25,7 +25,12 @@ const useStore = create((set, get) => ({
  },
  create: async (listData:IList) => {
   const response = await axios.post(URL, listData);
-},
+ },
+ update: async (listData:IList) => {
+  const response = await axios.put(URL, listData);
+  const list = await axios.get(`${URL}/${listData.createdAt}?userId=${listData.userId}`);
+  set((state:any) => ({ currentList: list.data.Items[0] }));
+ },
  }));
 export default useStore;
 

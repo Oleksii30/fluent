@@ -1,34 +1,33 @@
 .input_container {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  width: fit-content;
 }
 
 .word_input {
   border: none;
   outline: none;
   font-weight: bold;
-  border-bottom: 2px solid black;
   font-size: 20px;
+  width: 100%;
 }
 
 .word_input:disabled {
   color: black;
-  border-bottom: 2px solid transparent;
 }
 
 .additional_input {
   border: none;
   outline: none;
-  border-bottom: 2px solid var(--medium_grey);
-  color: var(--medium_grey);
+  color: black;
   font-size: 20px;
-  width: 70%;
+  width: 100%;
   font-style: italic;
 }
 
 .additional_input:disabled {
-  color: var(--medium_grey);
-  border-bottom: 2px solid transparent;
+  color: black;
 }
 
 .edit_icons_container {

@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import Header from 'components/header'
 import FormField from 'components/formField'
-import SubmitButton from 'components/buttons/submit'
+import MainButton from 'components/buttons/main'
 import { useForm, SubmitHandler } from "react-hook-form"
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from "yup";
@@ -72,7 +72,7 @@ export default function SignUp() {
             error={errors.confirmPassword}
           />
           <div style={{marginTop: 20}}>
-            <SubmitButton label='Submit'/>
+            <MainButton label='Submit'/>
           </div>
         </form>
       </main>

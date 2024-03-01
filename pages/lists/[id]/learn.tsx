@@ -1,14 +1,13 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Header from 'components/header';
-import ListForm from 'components/listForm';
 import useStore from 'store/lists';
 import { useAuthState } from 'context/auth';
 import { WordInput } from 'interfaces/list.interface';
 
 import styles from 'styles/pages/Lists.module.css';
 
-export default function List() {
+export default function Learn() {
   const router = useRouter();
   const { id } = router.query;
   const { user } = useAuthState()
@@ -61,9 +60,6 @@ export default function List() {
             </div>
           )}
         </div>
-      }
-      {
-        currentList && <ListForm item={currentList}/>
       }
     </div>
   )

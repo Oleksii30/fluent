@@ -9,6 +9,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 20px;
+    z-index: 200;
 }
 
 .links {
