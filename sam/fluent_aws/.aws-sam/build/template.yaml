@@ -1,0 +1,139 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: fluent_aws
+Transform:
+- AWS::Serverless-2016-10-31
+Resources:
+  getAllListsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/get-all-lists.handler
+      Runtime: nodejs20.x
+      Architectures:
+      - x86_64
+      MemorySize: 128
+      Timeout: 100
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: ListsTable
+      Environment:
+        Variables:
+          LISTS_TABLE:
+            Ref: ListsTable
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /
+            Method: GET
+      CodeUri: getAllListsFunction
+    Metadata:
+      SamResourceId: getAllListsFunction
+  getListByIdFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/get-list-by-id.handler
+      Runtime: nodejs20.x
+      Architectures:
+      - x86_64
+      MemorySize: 128
+      Timeout: 100
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: ListsTable
+      Environment:
+        Variables:
+          LISTS_TABLE:
+            Ref: ListsTable
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /{listId}
+            Method: GET
+      CodeUri: getListByIdFunction
+    Metadata:
+      SamResourceId: getListByIdFunction
+  createNewListFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/create-new-list.handler
+      Runtime: nodejs20.x
+      Architectures:
+      - x86_64
+      MemorySize: 128
+      Timeout: 100
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: ListsTable
+      Environment:
+        Variables:
+          LISTS_TABLE:
+            Ref: ListsTable
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /
+            Method: POST
+      CodeUri: createNewListFunction
+    Metadata:
+      SamResourceId: createNewListFunction
+  updateListFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/update-list.handler
+      Runtime: nodejs20.x
+      Architectures:
+      - x86_64
+      MemorySize: 128
+      Timeout: 100
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: ListsTable
+      Environment:
+        Variables:
+          LISTS_TABLE:
+            Ref: ListsTable
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /
+            Method: PUT
+      CodeUri: updateListFunction
+    Metadata:
+      SamResourceId: updateListFunction
+  ListsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+      - AttributeName: userId
+        AttributeType: S
+      - AttributeName: createdAt
+        AttributeType: N
+      KeySchema:
+      - AttributeName: userId
+        KeyType: HASH
+      - AttributeName: createdAt
+        KeyType: RANGE
+      ProvisionedThroughput:
+        ReadCapacityUnits: 2
+        WriteCapacityUnits: 2
+Outputs:
+  WebEndpoint:
+    Description: API Gateway endpoint URL for Prod stage
+    Value:
+      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/
+Globals:
+  Function:
+    LoggingConfig:
+      LogFormat: JSON
+  Api:
+    Cors:
+      AllowMethods: '''GET,POST,PUT,OPTIONS'''
+      AllowHeaders: '''content-type'''
+      AllowOrigin: '''*'''
