@@ -39,9 +39,21 @@ export default function Header() {
 					</h4>
 				}
 				{isLoggedIn &&
-					<h4 className={styles.link} onClick={handleLogout}>
-						Log Out
-					</h4>
+					<>
+						<h4>
+							<Link className={styles.link} href={Routes.CREATE}>
+								Create
+							</Link>
+						</h4>
+						<h4>
+							<Link className={styles.link} href={Routes.LISTS}>
+								Lists
+							</Link>
+						</h4>
+						<h4 className={styles.link} onClick={handleLogout}>
+							Log Out
+						</h4>
+					</>
 				}
 			</div>
 		</div>

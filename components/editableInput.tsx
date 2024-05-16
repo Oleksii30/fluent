@@ -61,6 +61,16 @@ export default function EditableInput({
     const values = getValues();
     submitForm(values);
     toggleEditMode();
+    setInitValue(getInitialValue());
+  }
+
+  const handlePressEnter = (event:any) => {
+    if(event.key !== 'Enter'){
+      return
+    }
+    (event.target as HTMLInputElement).blur();
+
+    handleSave();
   }
 
   function calculateFieldWidth(input:string) {
@@ -94,7 +104,6 @@ export default function EditableInput({
 
   const handleInputClick = () => {
     setIsEditMode(true);
-    console.log('click')
   }
 
   const calculateFieldType = () => {
@@ -119,10 +128,12 @@ export default function EditableInput({
         <input
           className={calculateFieldType()}
           {...register(fieldName)}
-          disabled={!isEditMode}
+          readOnly={!isEditMode}
           onChange={handleChange}
           style={{width: fieldWidth}}
           placeholder={placeholder}
+          onKeyDown={handlePressEnter}
+          onClick={handleInputClick}
         />
       {!isEditMode &&
         <div className={styles.edit_icons_container}>

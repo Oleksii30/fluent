@@ -2,5 +2,6 @@ export enum Routes {
     ROOT = '/',
     SIGNUP = '/signup',
     LOGIN = '/login',
-    LISTS = '/lists'
+    LISTS = '/lists',
+    CREATE = '/create',
 }
