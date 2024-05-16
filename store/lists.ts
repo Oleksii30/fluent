@@ -31,6 +31,11 @@ const useStore = create((set, get) => ({
   const list = await axios.get(`${URL}/${listData.createdAt}?userId=${listData.userId}`);
   set((state:any) => ({ currentList: list.data }));
  },
- }));
+ delete: async (userId: string, listId: string) => {
+  await axios.delete(`${URL}/?listId=${listId}&userId=${userId}`);
+  const response = await axios.get(`${URL}?userId=${userId}`);
+  set((state:any) => ({ lists: response.data }));
+ },
+}));
 export default useStore;
 

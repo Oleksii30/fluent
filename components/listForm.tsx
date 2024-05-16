@@ -37,9 +37,6 @@ export default function ListForm({ item,  }:Props) {
   const createList = useStore((state: any) => state.create);
 
   const submitForm = (data: any) => {
-    // if(!data.list.length){
-    //   return
-    // }
 
     const body = {
       ...data,

@@ -52,6 +52,27 @@ Resources:
           Properties:
             Path: /{listId}
             Method: GET
+  deleteListFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/delete-list.handler
+      Runtime: nodejs20.x
+      Architectures:
+      - x86_64
+      MemorySize: 128
+      Timeout: 100
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName: !Ref ListsTable
+      Environment:
+        Variables:
+          LISTS_TABLE: !Ref ListsTable
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /
+            Method: DELETE
   createNewListFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -127,6 +148,6 @@ Globals:
       LogFormat: JSON
   Api:
     Cors:
-      AllowMethods: "'GET,POST,PUT,OPTIONS'"
+      AllowMethods: "'GET,POST,PUT,DELETE,OPTIONS'"
       AllowHeaders: "'content-type'"
       AllowOrigin: "'*'"

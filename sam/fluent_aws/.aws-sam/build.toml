@@ -7,6 +7,6 @@ architecture = "x86_64"
 handler = "src/handlers/get-all-items.getAllItemsHandler"
 manifest_hash = "1334517788139c8510cef92e384bef12"
 packagetype = "Zip"
-functions = ["getAllListsFunction", "getListByIdFunction", "createNewListFunction", "updateListFunction"]
+functions = ["getAllListsFunction", "getListByIdFunction", "deleteListFunction", "createNewListFunction", "updateListFunction"]
 
 [layer_build_definitions]
