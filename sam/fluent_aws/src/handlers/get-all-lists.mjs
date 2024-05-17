@@ -21,14 +21,24 @@ export const handler = async (event) => {
 
         const response =  {
             statusCode: 200,
-            body: JSON.stringify(body.Items)
+            body: JSON.stringify(body.Items),
+            headers: {
+                "Access-Control-Allow-Headers" : "Content-Type",
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Methods": "GET"
+            },
         }
 
         return response;
     }catch(error){
         const response =  {
             statusCode: error.$metadata.httpStatusCode,
-            body: JSON.stringify(error)
+            body: JSON.stringify(error),
+            headers: {
+                "Access-Control-Allow-Headers" : "Content-Type",
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Methods": "GET"
+            },
         }
         return response;
     }

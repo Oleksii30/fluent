@@ -5,11 +5,7 @@
     "private": true,
     "dependencies": {
         "@aws-sdk/client-dynamodb": "^3.398.0",
-        "@aws-sdk/lib-dynamodb": "^3.398.0",
-        "@middy/core": "^5.3.5",
-        "@middy/http-error-handler": "^5.3.5",
-        "@middy/http-json-body-parser": "^5.3.5",
-        "@middy/http-urlencode-body-parser": "^5.3.5"
+        "@aws-sdk/lib-dynamodb": "^3.398.0"
     },
     "devDependencies": {
         "aws-sdk-client-mock": "^2.0.0",
