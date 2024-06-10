@@ -9,7 +9,7 @@ const useStore = create((set, get) => ({
  currentList: null,
  all: async (userId: string) => {
   const response = await axios.get(`${URL}?userId=${userId}`);
-  set((state:any) => ({ lists: response.data }));
+  set((state:any) => ({ lists: response.data, currentList: null }));
  },
  getById: async (userId: string, listId: string) => {
   const state:any = get();
@@ -20,8 +20,12 @@ const useStore = create((set, get) => ({
     return;
   }
 
-  const response = await axios.get(`${URL}/${listId}?userId=${userId}`);
-  set((state:any) => ({ currentList: response.data }));
+  try{
+    const response = await axios.get(`${URL}/${listId}?userId=${userId}`);  
+    set((state:any) => ({ currentList: response.data }));
+  }catch(error:any){
+    console.log(error.response.data)
+  }
  },
  create: async (listData:IList) => {
   const response = await axios.post(URL, listData);

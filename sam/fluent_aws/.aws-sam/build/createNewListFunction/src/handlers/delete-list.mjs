@@ -1,17 +1,22 @@
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { DynamoDBDocumentClient, DeleteCommand } from '@aws-sdk/lib-dynamodb';
+import middy from '@middy/core';
+import cors from '@middy/http-cors';
+import httpErrorHandler from '@middy/http-error-handler';
+import createError from 'http-errors';
+
 const client = new DynamoDBClient({});
 const dynamo = DynamoDBDocumentClient.from(client);
 
 const tableName = process.env.LISTS_TABLE;
 
 
-export const handler = async (event) => {
+const lambdaHandler = async (event) => {
 
   const listId = event.queryStringParameters.listId;
   const userId = event.queryStringParameters.userId;
 
-  var params = {
+  const params = {
     TableName : tableName,
     Key: { createdAt: Number(listId), userId: userId },
   };
@@ -19,13 +24,13 @@ export const handler = async (event) => {
   await dynamo.send(new DeleteCommand(params));
 
   const response = {
-    statusCode: 201,
-    headers: {
-        "Access-Control-Allow-Headers" : "Content-Type",
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "GET"
-    }
+    statusCode: 204,
   };
 
   return response;
 }
+
+export const handler = middy()
+  .use(httpErrorHandler())
+  .use(cors())
+  .handler(lambdaHandler)

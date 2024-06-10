@@ -11,8 +11,8 @@ export default function Home() {
 
   const getLists = useStore((state: any) => state.all);
   const deleteList = useStore((state: any) => state.delete);
-  const lists = useStore((state: any) => state.lists);
-  const { isLoggedIn, user } = useAuthState()
+  const { isLoggedIn, user } = useAuthState();
+  const lists = useStore((state: any) => state.lists);  
 
   useEffect(() => {
     if(isLoggedIn){
@@ -30,7 +30,7 @@ export default function Home() {
       <main className={styles.main}>
         <div className={styles.lists_container}>
           {lists.map((list:IList) =>
-            <ListCard key={list.createdAt} list={list} onDeleteList={handleDeleteList}/>
+            <ListCard key={list.createdAt + user.username} list={list} onDeleteList={handleDeleteList}/>
           )}
         </div>
       </main>
