@@ -15,28 +15,28 @@ const lambdaHandler = async (event) => {
   const listId = event.pathParameters.listId;
   const userId = event.queryStringParameters.userId;
 
-    const params = {
-      TableName : tableName,
-      Key: { createdAt: Number(listId), userId: userId },
-    };
+  const params = {
+    TableName : tableName,
+    Key: { createdAt: Number(listId), userId: userId },
+  };
 
-    const data = await dynamo.send(new GetCommand(params));
-  
-    if(!data.Item){
-      throw new createError(404, 'This list does not exist!');
-    }
-  
-    const item = data.Item;
+  const data = await dynamo.send(new GetCommand(params));
 
-    const response = {
-      statusCode: 200,
-      body: JSON.stringify(item)
-    };
-  
-    return response;
+  if(!data.Item){
+    throw new createError(404, 'This list does not exist!');
+  }
+
+  const item = data.Item;
+
+  const response = {
+    statusCode: 200,
+    body: JSON.stringify(item)
+  };
+
+  return response;
 }
 
 export const handler = middy()
-    .use(httpErrorHandler())
-    .use(cors())
-    .handler(lambdaHandler)
+  .use(cors())
+  .use(httpErrorHandler())
+  .handler(lambdaHandler)

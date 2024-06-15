@@ -31,6 +31,6 @@ const lambdaHandler = async (event) => {
 }
 
 export const handler = middy()
-  .use(httpErrorHandler())
   .use(cors())
+  .use(httpErrorHandler())
   .handler(lambdaHandler)

@@ -1,18 +1,20 @@
 import { create } from 'zustand';
 import axios from 'axios';
 import { IList } from 'interfaces/list.interface';
+import { toast } from 'react-toastify';
 
 export const URL = 'https://rek2ict79j.execute-api.us-west-2.amazonaws.com/Prod';
 
 const useStore = create((set, get) => ({
  lists: null,
  currentList: null,
+ errorMessage: null,
  all: async (items: Array<IList>) => {
   set((state:any) => ({ lists: items, currentList: null }));
  },
  getById: async (userId: string, listId: string) => {
   const state:any = get();
-  const list:IList = state.lists.find((list:any) => list.createdAt == listId);
+  const list:IList = state.lists?.find((list:any) => list.createdAt == listId);
 
   if(list) {
     set((state:any) => ({ currentList: list }));
@@ -23,7 +25,7 @@ const useStore = create((set, get) => ({
     const response = await axios.get(`${URL}/${listId}?userId=${userId}`);
     set((state:any) => ({ currentList: response.data }));
   }catch(error:any){
-    console.log(error.response.data)
+    toast.error(error.response.data);
   }
  },
  create: async (listData:IList) => {

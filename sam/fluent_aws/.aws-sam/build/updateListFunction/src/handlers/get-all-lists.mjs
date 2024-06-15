@@ -11,27 +11,27 @@ const dynamo = DynamoDBDocumentClient.from(client);
 const tableName = process.env.LISTS_TABLE;
 
 export const lambdaHandler = async (event) => {
-    const userId = event.queryStringParameters.userId;
+	const userId = event.queryStringParameters.userId;
 
-    const body = await dynamo.send(
-        new QueryCommand({
-            TableName: tableName,
-            KeyConditionExpression: 'userId = :userId',
-            ExpressionAttributeValues: {
-                ":userId": userId,
-            }
-        })
-    );
+	const body = await dynamo.send(
+		new QueryCommand({
+			TableName: tableName,
+			KeyConditionExpression: 'userId = :userId',
+			ExpressionAttributeValues: {
+				":userId": userId,
+			}
+		})
+	);
 
-    const response =  {
-        statusCode: 200,
-        body: JSON.stringify(body.Items),
-    }
+	const response =  {
+		statusCode: 200,
+		body: JSON.stringify(body.Items),
+	}
 
-    return response;
+	return response;
 };
 
 export const handler = middy()
-    .use(httpErrorHandler())
-    .use(cors())
-    .handler(lambdaHandler)
+  .use(cors())
+  .use(httpErrorHandler())
+  .handler(lambdaHandler)

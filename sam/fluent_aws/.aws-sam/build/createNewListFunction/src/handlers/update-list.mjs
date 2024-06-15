@@ -12,23 +12,23 @@ const tableName = process.env.LISTS_TABLE;
 
 const lambdaHandler = async (event) => {
 
-    const body = JSON.parse(event.body);
+	const body = JSON.parse(event.body);
 
-    await dynamo.send(
-        new PutCommand({
-        TableName: tableName,
-        Item: {
-                ...body
-            },
-        })
-    );
+	await dynamo.send(
+		new PutCommand({
+		TableName: tableName,
+		Item: {
+				...body
+			},
+		})
+	);
 
-    return {
-        statusCode: 200,
-    }
+	return {
+		statusCode: 200,
+	}
 };
 
 export const handler = middy()
-    .use(httpErrorHandler())
-    .use(cors())
-    .handler(lambdaHandler)
+  .use(cors())
+  .use(httpErrorHandler())
+  .handler(lambdaHandler)
