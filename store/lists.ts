@@ -38,17 +38,29 @@ const useStore = create((set, get) => ({
   }
  },
  create: async (listData:IList) => {
-  const response = await axios.post(URL, listData);
+  try{
+    const response = await axios.post(URL, listData);
+  }catch(error:any){
+    toast.error(error.response.data);
+  }
  },
- update: async (listData:IList) => {
-  const response = await axios.put(URL, listData);
-  const list = await axios.get(`${URL}/${listData.createdAt}?userId=${listData.userId}`);
-  set((state:State) => ({ currentList: list.data }));
+  update: async (listData:IList) => {
+  try{
+    const response = await axios.put(URL, listData);
+    const list = await axios.get(`${URL}/${listData.createdAt}?userId=${listData.userId}`);
+    set((state:State) => ({ currentList: list.data }));
+  }catch(error:any){
+    toast.error(error.response.data);
+  }
  },
  delete: async (userId: string, listId: string) => {
-  await axios.delete(`${URL}/?listId=${listId}&userId=${userId}`);
-  const response = await axios.get(`${URL}?userId=${userId}`);
-  set((state:State) => ({ lists: response.data }));
+  try{
+    await axios.delete(`${URL}/?listId=${listId}&userId=${userId}`);
+    const response = await axios.get(`${URL}?userId=${userId}`);
+    set((state:State) => ({ lists: response.data }));
+  }catch(error:any){
+    toast.error(error.response.data);
+  }
  },
 }));
 export default useStore;
