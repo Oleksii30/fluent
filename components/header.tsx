@@ -10,7 +10,7 @@ import styles from 'styles/components/Header.module.css'
 
 export default function Header() {
 	const router = useRouter()
-	const { isLoggedIn } = useAuthState()
+	const { isLoggedIn, user } = useAuthState()
 	const authDispatch = useAuthDispatch()
 
 	const handleLogout = () => {
@@ -46,7 +46,7 @@ export default function Header() {
 							</Link>
 						</h4>
 						<h4>
-							<Link className={styles.link} href={Routes.LISTS}>
+							<Link className={styles.link} href={`${Routes.LISTS}?userId=${user.username}`}>
 								Lists
 							</Link>
 						</h4>

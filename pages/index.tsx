@@ -7,7 +7,7 @@ import { Routes } from 'enums/routes';
 import styles from 'styles/pages/Home.module.css';
 
 export default function Home() {
-  const { isLoggedIn } = useAuthState();
+  const { isLoggedIn, user } = useAuthState();
 
   return (
     <div className={styles.container}>
@@ -22,7 +22,7 @@ export default function Home() {
           Welcome to Fluently
         </h1>
         {isLoggedIn &&
-          <Link href={Routes.LISTS}>Go to lists</Link>
+          <Link href={`${Routes.LISTS}?userId=${user.username}`}>Go to lists</Link>
         }
       </main>
     </div>
