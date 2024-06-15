@@ -5,25 +5,34 @@ import { toast } from 'react-toastify';
 
 export const URL = 'https://rek2ict79j.execute-api.us-west-2.amazonaws.com/Prod';
 
+type State = {
+  lists: Array<IList> | null;
+  currentList: IList | null;
+  all: (items: Array<IList>) => void;
+  getById: (userId: string, listId: string) => void;
+  create: (listData:IList) => void;
+  update: (listData:IList) => void;
+  delete: (userId: string, listId: string) => void;
+}
+
 const useStore = create((set, get) => ({
  lists: null,
  currentList: null,
- errorMessage: null,
  all: async (items: Array<IList>) => {
-  set((state:any) => ({ lists: items, currentList: null }));
+  set((state:State) => ({ lists: items, currentList: null }));
  },
  getById: async (userId: string, listId: string) => {
-  const state:any = get();
-  const list:IList = state.lists?.find((list:any) => list.createdAt == listId);
+  const state = <State>get();
+  const list:IList | undefined = state.lists?.find((list:IList) => list.createdAt === Number(listId));
 
   if(list) {
-    set((state:any) => ({ currentList: list }));
+    set((state:State) => ({ currentList: list }));
     return;
   }
 
   try{
     const response = await axios.get(`${URL}/${listId}?userId=${userId}`);
-    set((state:any) => ({ currentList: response.data }));
+    set((state:State) => ({ currentList: response.data }));
   }catch(error:any){
     toast.error(error.response.data);
   }
@@ -34,12 +43,12 @@ const useStore = create((set, get) => ({
  update: async (listData:IList) => {
   const response = await axios.put(URL, listData);
   const list = await axios.get(`${URL}/${listData.createdAt}?userId=${listData.userId}`);
-  set((state:any) => ({ currentList: list.data }));
+  set((state:State) => ({ currentList: list.data }));
  },
  delete: async (userId: string, listId: string) => {
   await axios.delete(`${URL}/?listId=${listId}&userId=${userId}`);
   const response = await axios.get(`${URL}?userId=${userId}`);
-  set((state:any) => ({ lists: response.data }));
+  set((state:State) => ({ lists: response.data }));
  },
 }));
 export default useStore;
