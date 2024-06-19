@@ -7,7 +7,7 @@ type Props = {
     type: string,
     name: any,
     register: UseFormRegister<any>,
-    error?: FieldError
+    error?: FieldError,
 }
 
 export default function FormField({label, type, name, error, register}:Props) {

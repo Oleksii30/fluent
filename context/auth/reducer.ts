@@ -9,14 +9,16 @@ export interface IAuthState {
 	user: any,
 	loading: boolean,
 	error: any,
-	isLoggedIn: boolean
+	isLoggedIn: boolean,
+	verificationCodeReceived: boolean
 }
 
 export const initialState:IAuthState = {
 	user: null,
 	loading: true,
 	error: null,
-	isLoggedIn: false
+	isLoggedIn: false,
+	verificationCodeReceived: false
 };
 
 function authReducer(state:IAuthState, action:IAuthAction) {
@@ -26,7 +28,8 @@ function authReducer(state:IAuthState, action:IAuthAction) {
 				user: action.payload,
 				loading: false,
 				error: null,
-				isLoggedIn: true
+				isLoggedIn: true,
+				verificationCodeReceived: false
 			}
 		}
 		case ActionTypes.ERROR: {
@@ -43,7 +46,15 @@ function authReducer(state:IAuthState, action:IAuthAction) {
 				user: null,
 				loading: false,
 				error: null,
-				isLoggedIn: false
+				isLoggedIn: false,
+				verificationCodeReceived: false
+			}
+		}
+
+		case ActionTypes.VERIFICATION_CODE_RECEIVED: {
+			return {
+				...state,
+				verificationCodeReceived: true
 			}
 		}
 

@@ -22,9 +22,6 @@
 }
 
 .error_message {
-    position: absolute;
-    left: 0;
-    bottom: 0;
     color: red;
     font-size: 14px;
 }

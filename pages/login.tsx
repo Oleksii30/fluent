@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import Link from 'next/link'
 import Header from 'components/header'
 import FormField from 'components/formField'
 import MainButton from 'components/buttons/main'
@@ -8,6 +9,7 @@ import * as yup from "yup";
 import { ILogin } from 'interfaces/login.interface'
 import { useAuthDispatch, useAuthState, login } from 'context/auth'
 import { useRouter } from 'next/navigation'
+import { Routes } from 'enums/routes';
 
 import styles from 'styles/pages/Form.module.css'
 
@@ -59,6 +61,9 @@ export default function LogIn() {
               <MainButton label='Submit'/>
             </div>
         </form>
+        <div style={{marginTop: 20}}>
+          <Link href={Routes.RESTORE_PASSWORD}>Forgot password?</Link>
+        </div>
       </main>
     </div>
   )
