@@ -40,15 +40,25 @@ export default function Home({ repo }: InferGetServerSidePropsType<typeof getSer
     deleteList(user.username, listCreatedAt);
   }
 
+  const renderLists = () => {
+    if(lists.length === 0){
+      return <div>No lists were created yet</div>
+    }
+
+    return(
+      <div className={styles.lists_container}>
+        {lists.map((list:IList) =>
+          <ListCard key={list.createdAt} list={list} onDeleteList={handleDeleteList}/>
+        )}
+      </div>
+    )
+  }
+
   return (
     <div className={styles.container}>
       <Header/>
       <main className={styles.main}>
-        <div className={styles.lists_container}>
-          {lists.map((list:IList) =>
-            <ListCard key={list.createdAt} list={list} onDeleteList={handleDeleteList}/>
-          )}
-        </div>
+        {renderLists()}
       </main>
     </div>
   )
