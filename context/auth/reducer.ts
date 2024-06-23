@@ -8,7 +8,7 @@ export interface IAuthAction {
 export interface IAuthState {
 	user: any,
 	loading: boolean,
-	error: any,
+	error: Error | null,
 	isLoggedIn: boolean,
 	verificationCodeReceived: boolean
 }

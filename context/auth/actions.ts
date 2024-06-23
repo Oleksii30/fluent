@@ -1,5 +1,5 @@
 import UserPool from "userPool";
-import { CognitoUser, AuthenticationDetails } from "amazon-cognito-identity-js";
+import { CognitoUser, AuthenticationDetails, CognitoUserSession } from "amazon-cognito-identity-js";
 import { ActionTypes } from "./actionTypes";
 import { ISignup } from 'interfaces/signup.interface';
 import { ILogin } from 'interfaces/login.interface';
@@ -47,7 +47,7 @@ export async function login(dispatch: Dispatch<IAuthAction>, data: ILogin) {
 export async function getSession(dispatch: Dispatch<IAuthAction>) {
   const user = UserPool.getCurrentUser()
   if(user) {
-    user.getSession((error: any, session: any) => {
+    user.getSession((error: Error | null, session: CognitoUserSession) => {
       if(session) {
         dispatch({ type: ActionTypes.SUCCESS, payload: user })
       }
