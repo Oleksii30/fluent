@@ -1,10 +1,8 @@
-import styles from 'styles/components/Logo.module.css'
+import Image from 'next/image';
 
 export default function Logo() {
 
     return (
-        <div className={styles.logo}>
-            <h2>F</h2>
-        </div>
+        <Image src='/images/logo_1.png' alt='logo' width={60} height={60}/>
     )
 }
