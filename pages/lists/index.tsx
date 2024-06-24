@@ -12,14 +12,14 @@ type Repo = {
   items: Array<IList>
 }
 
-export const getServerSideProps = (async (req) => {
+export const getServerSideProps = async (req: any) => {
   const { userId } = req.query;
   const res = await fetch(`${URL}?userId=${userId}`);
   const data = await res.json();
   const repo: Repo = {items: data};
 
   return { props: { repo } }
-}) satisfies GetServerSideProps<{ repo: Repo }>
+}
 
 export default function Home({ repo }: InferGetServerSidePropsType<typeof getServerSideProps>) {
 

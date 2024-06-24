@@ -20,7 +20,7 @@ const createSchema = (verificationCodeReceived: boolean) => {
   return schema
 }
 
-export default function restorePassword() {
+export default function RestorePassword() {
   const authDispatch = useAuthDispatch();
   const { verificationCodeReceived, isLoggedIn } = useAuthState();
   const router = useRouter();
