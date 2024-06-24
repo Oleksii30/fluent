@@ -1,11 +1,12 @@
-import Link from 'next/link'
-import Logo from './logo'
-import { useRouter } from 'next/router'
-import { useAuthDispatch, useAuthState, logOut } from 'context/auth'
+import Link from 'next/link';
+import Logo from './logo';
+import { useRouter } from 'next/router';
+import { useAuthDispatch, useAuthState, logOut } from 'context/auth';
+import useStore, { State }  from 'store/lists';
 
-import { Routes } from 'enums/routes'
+import { Routes } from 'enums/routes';
 
-import styles from 'styles/components/Header.module.css'
+import styles from 'styles/components/Header.module.css';
 
 
 export default function Header() {
@@ -13,9 +14,16 @@ export default function Header() {
 	const { isLoggedIn, user } = useAuthState()
 	const authDispatch = useAuthDispatch()
 
-	const handleLogout = () => {
-		logOut(authDispatch)
-		router.replace('/')
+	const nullCurrentList = useStore((state: State) => state.nullCurrentList);
+
+	const handleLogoutLink = () => {
+		logOut(authDispatch);
+		router.replace('/');
+	}
+
+	const handleCreateLink = () => {
+		nullCurrentList();
+		router.replace(Routes.CREATE);
 	}
 
 	return (
@@ -40,17 +48,15 @@ export default function Header() {
 				}
 				{isLoggedIn &&
 					<>
-						<h4>
-							<Link className={styles.link} href={Routes.CREATE}>
-								Create
-							</Link>
+						<h4 className={styles.link} onClick={handleCreateLink}>
+							Create
 						</h4>
 						<h4>
 							<Link className={styles.link} href={`${Routes.LISTS}?userId=${user.username}`}>
 								Lists
 							</Link>
 						</h4>
-						<h4 className={styles.link} onClick={handleLogout}>
+						<h4 className={styles.link} onClick={handleLogoutLink}>
 							Log Out
 						</h4>
 					</>

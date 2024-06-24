@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import Head from 'next/head';
 import Header from 'components/header';
 import ListForm from 'components/listForm';
@@ -9,11 +8,6 @@ import styles from 'styles/pages/Create.module.css';
 export default function Create() {
 
   const currentList = useStore((state: State) => state.currentList);
-  const nullCurrentList = useStore((state: State) => state.nullCurrentList);
-
-  useEffect(() =>{
-    nullCurrentList();
-  }, [])
 
   return (
     <div className={styles.container}>

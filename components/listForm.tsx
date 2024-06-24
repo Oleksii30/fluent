@@ -22,6 +22,7 @@ export default function ListForm({ item }:Props) {
       list: item ? item.list : []
     }
   });
+
   const { fields, append, remove, update } = useFieldArray({
     control,
     name: "list",
