@@ -45,7 +45,7 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  height: 60px;
+  min-height: 60px;
 }
 
 .vertical_container {
@@ -55,7 +55,7 @@
 }
 
 .additional_input_container {
-  margin-right: 35px;
+  margin: 5px 35px 5px 0px;
 }
 
 .additional_input {

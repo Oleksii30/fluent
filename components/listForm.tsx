@@ -17,9 +17,9 @@ type Props = {
 export default function ListForm({ item }:Props) {
   const { control, register, handleSubmit, setFocus, getValues, setValue } = useForm({
     defaultValues:{
-      header: item?.header || '',
-      language: item?.language || 'en',
-      list: item?.list || []
+      header: item ? item.header : '',
+      language: item ? item.language : 'en',
+      list: item ? item.list : []
     }
   });
   const { fields, append, remove, update } = useFieldArray({

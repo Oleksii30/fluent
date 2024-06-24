@@ -13,6 +13,7 @@ export type State = {
   create: (listData:IList) => void;
   update: (listData:IList) => void;
   delete: (userId: string, listId: number) => void;
+  nullCurrentList: () => void;
 }
 
 const useStore = create<State>((set, get) => ({
@@ -64,6 +65,9 @@ const useStore = create<State>((set, get) => ({
     toast.error(error.response.data);
   }
  },
+ nullCurrentList: () => {
+  set((state:State) => ({ currentList: null }));
+ }
 }));
 export default useStore;
 
