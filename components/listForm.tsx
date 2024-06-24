@@ -2,19 +2,19 @@ import EditableInput, { FieldTypes } from './editableInput';
 import IconButton from 'components/buttons/icon';
 import { useForm, useFieldArray } from "react-hook-form";
 import { PlusCircle, X, ArrowRightCircle } from 'react-feather';
-import useStore from 'store/lists';
+import useStore, { State } from 'store/lists';
 import { WordInput, IList } from 'interfaces/list.interface';
 import { useAuthState } from 'context/auth';
+import { format } from "date-fns";
+import { DateFormats } from 'enums/dateFormats';
 
 import styles from 'styles/components/ListForm.module.css';
 
 type Props = {
-  item?: IList,
+  item: IList | null,
 }
 
-const listId = Date.now();
-
-export default function ListForm({ item,  }:Props) {
+export default function ListForm({ item }:Props) {
   const { control, register, handleSubmit, setFocus, getValues, setValue } = useForm({
     defaultValues:{
       header: item?.header || '',
@@ -33,16 +33,16 @@ export default function ListForm({ item,  }:Props) {
 
   const { user } = useAuthState()
 
-  const updateList = useStore((state: any) => state.update);
-  const createList = useStore((state: any) => state.create);
+  const updateList = useStore((state: State) => state.update);
+  const createList = useStore((state: State) => state.create);
 
   const submitForm = (data: any) => {
 
     const body = {
       ...data,
       userId: user.username,
-      header: data.header ? data.header : Date.now(),
-      createdAt: item?.createdAt || listId
+      header: data.header ? data.header : format(new Date(), DateFormats.YYYY_MM_DD),
+      createdAt: item?.createdAt || Date.now()
     }
 
     item ? updateList(body) : createList(body);

@@ -1,10 +1,13 @@
 import Head from 'next/head';
 import Header from 'components/header';
 import ListForm from 'components/listForm';
+import useStore, { State }  from 'store/lists';
 
 import styles from 'styles/pages/Create.module.css';
 
 export default function Create() {
+
+  const currentList = useStore((state: State) => state.currentList);
 
   return (
     <div className={styles.container}>
@@ -18,7 +21,7 @@ export default function Create() {
         <h1 className={styles.title}>
           Create List
         </h1>
-        <ListForm/>
+        <ListForm item={currentList ? currentList : null}/>
       </main>
     </div>
   )

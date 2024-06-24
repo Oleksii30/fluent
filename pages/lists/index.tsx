@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import Header from 'components/header';
 import ListCard from 'components/listCard';
-import useStore, { URL } from 'store/lists';
+import useStore, { URL, State } from 'store/lists';
 import { useAuthState } from 'context/auth'
 import { IList } from 'interfaces/list.interface';
 import type { InferGetServerSidePropsType, GetServerSideProps } from 'next';
@@ -23,10 +23,10 @@ export const getServerSideProps = (async (req) => {
 
 export default function Home({ repo }: InferGetServerSidePropsType<typeof getServerSideProps>) {
 
-  const setLists = useStore((state: any) => state.all);
-  const deleteList = useStore((state: any) => state.delete);
+  const setLists = useStore((state: State) => state.all);
+  const deleteList = useStore((state: State) => state.delete);
   const { isLoggedIn, user } = useAuthState();
-  const storedLists = useStore((state: any) => state.lists);
+  const storedLists = useStore((state: State) => state.lists);
   const repoLists = repo.items;
   const lists = storedLists || repoLists;
 

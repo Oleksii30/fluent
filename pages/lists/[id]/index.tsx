@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Header from 'components/header';
 import ListForm from 'components/listForm';
-import useStore from 'store/lists';
+import useStore, { State } from 'store/lists';
 import { useAuthState } from 'context/auth';
 import Link from 'next/link';
 import { Routes } from 'enums/routes';
@@ -15,14 +15,14 @@ export default function List() {
   const { id } = router.query;
   const { user } = useAuthState()
 
-  const getListById = useStore((state: any) => state.getById);
-  const currentList = useStore((state: any) => state.currentList);
+  const getListById = useStore((state: State) => state.getById);
+  const currentList = useStore((state: State) => state.currentList);
 
   useEffect(() => {
     if(!user || !id){
       return
     }
-    getListById(user.username, id)
+    getListById(user.username, id as string)
   }, [id, user, getListById])
 
   return (

@@ -5,17 +5,17 @@ import { toast } from 'react-toastify';
 
 export const URL = 'https://rek2ict79j.execute-api.us-west-2.amazonaws.com/Prod';
 
-type State = {
+export type State = {
   lists: Array<IList> | null;
   currentList: IList | null;
   all: (items: Array<IList>) => void;
   getById: (userId: string, listId: string) => void;
   create: (listData:IList) => void;
   update: (listData:IList) => void;
-  delete: (userId: string, listId: string) => void;
+  delete: (userId: string, listId: number) => void;
 }
 
-const useStore = create((set, get) => ({
+const useStore = create<State>((set, get) => ({
  lists: null,
  currentList: null,
  all: async (items: Array<IList>) => {
@@ -40,6 +40,8 @@ const useStore = create((set, get) => ({
  create: async (listData:IList) => {
   try{
     const response = await axios.post(URL, listData);
+    const createdList = await axios.get(`${URL}/${listData.createdAt}?userId=${listData.userId}`);
+    set((state:State) => ({ currentList: createdList.data }));
   }catch(error:any){
     toast.error(error.response.data);
   }
@@ -53,7 +55,7 @@ const useStore = create((set, get) => ({
     toast.error(error.response.data);
   }
  },
- delete: async (userId: string, listId: string) => {
+ delete: async (userId: string, listId: number) => {
   try{
     await axios.delete(`${URL}/?listId=${listId}&userId=${userId}`);
     const response = await axios.get(`${URL}?userId=${userId}`);
