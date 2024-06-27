@@ -82,6 +82,13 @@ export default function EditableInput({
     if(!onRemove){
       return
     }
+
+    const value = getInitialValue();
+    if(!value){
+      onRemove();
+      return
+    }
+
     onRemove();
     const values = getValues();
     submitForm(values);
