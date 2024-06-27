@@ -37,7 +37,8 @@ function authReducer(state:IAuthState, action:IAuthAction) {
 				user: null,
 				loading: false,
 				error: action.payload,
-				isLoggedIn: false
+				isLoggedIn: false,
+				verificationCodeReceived: false
 			}
 		}
 
