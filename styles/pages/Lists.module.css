@@ -49,3 +49,13 @@
   font-size: 20px;
   font-style: italic;
 }
+
+.list_variants_container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.list_words_container {
+  display: flex;
+  flex-wrap: wrap;
+}

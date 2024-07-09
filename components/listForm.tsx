@@ -43,7 +43,8 @@ export default function ListForm({ item }:Props) {
       ...data,
       userId: user.username,
       header: data.header ? data.header : format(new Date(), DateFormats.YYYY_MM_DD),
-      createdAt: item?.createdAt || Date.now()
+      createdAt: item?.createdAt || Date.now(),
+      isLearned: false
     }
 
     item ? updateList(body) : createList(body);
