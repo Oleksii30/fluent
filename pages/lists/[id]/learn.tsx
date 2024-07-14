@@ -9,18 +9,40 @@ import WordCard from 'components/wordCard';
 
 import styles from 'styles/pages/Lists.module.css';
 
+export type ResultItem = {
+  word: string,
+  answers: Array<string>
+}
+
 export default function Learn() {
   const router = useRouter();
   const { id } = router.query;
   const { user } = useAuthState();
-  //const [bankOfWords, setBankOfWords] = useState<Array<string>>([]);
+  const [resultList, setResultList] = useState<Array<ResultItem>>([]);
   const [bankOfVariants, setBankOfVariants] = useState<Array<string>>([]);
 
   const getListById = useStore((state: State) => state.getById);
   const currentList = useStore((state: State) => state.currentList);
 
   const handleDragEnd = (result:any) => {
-    console.log('drag end', result)
+    const destinationBoxName = result.destination.droppableId;
+    const sourceBoxName = result.source.droppableId;
+    const answer = result.draggableId;
+    if(sourceBoxName === destinationBoxName){
+      return
+    }
+    setResultList(prevList => {
+      const  resultList = prevList.map(item => {
+        if(item.word === destinationBoxName){
+          item.answers.push(answer)
+        }
+        return item
+      });
+
+      return resultList
+    })
+
+    setBankOfVariants(prevList => prevList.filter(item => item !== answer))
   }
 
   useEffect(()=>{
@@ -34,7 +56,8 @@ export default function Learn() {
         words = [...words, item.word];
     }
     setBankOfVariants(variants);
-    //setBankOfWords(words);
+    const resultList = words.map(word => ({word: word, answers: []}));
+    setResultList(resultList);
 
   }, [currentList])
 
@@ -60,7 +83,7 @@ export default function Learn() {
                 )}
               </Droppable>
               <div className={styles.list_words_container}>
-                {currentList.list.map(listItem => <WordCard listItem={listItem}/>)}
+                {resultList.map(resultItem => <WordCard resultItem={resultItem}/>)}
               </div>
           </div>
         </DragDropContext>

@@ -1,18 +1,21 @@
-import { useState } from 'react';
 import { Droppable } from "@hello-pangea/dnd";
-import { WordInput } from 'interfaces/list.interface';
 import styles from 'styles/components/WordCard.module.css';
+import VariantCard from 'components/variantCard';
+import { ResultItem } from 'pages/lists/[id]/learn';
 
 type Props = {
-  listItem: WordInput
+  resultItem: ResultItem
 }
 
-export default function WordCard({ listItem }:Props) {
+export default function WordCard({ resultItem }:Props) {
   return (
-    <Droppable droppableId={listItem.word}>
+    <Droppable droppableId={resultItem.word}>
       {(provided, snapshot) => (
         <div className={styles.word_container} ref={provided.innerRef} {...provided.droppableProps}>
-          <span className={styles.word_text}>{listItem.word}</span>
+          <span className={styles.word_text}>{resultItem.word}</span>
+          <div>
+            {resultItem.answers.map((answer, index) => <VariantCard variant={answer} index={index} />)}
+          </div>
         </div>
       )}
     </Droppable>
