@@ -34,7 +34,10 @@ export default function Learn() {
     setResultList(prevList => {
       const  resultList = prevList.map(item => {
         if(item.word === destinationBoxName){
-          item.answers.push(answer)
+          item.answers = [...item.answers, answer]
+        }
+        if(item.word === sourceBoxName){
+          item.answers = item.answers.filter(item => item !== answer)
         }
         return item
       });
@@ -42,7 +45,18 @@ export default function Learn() {
       return resultList
     })
 
-    setBankOfVariants(prevList => prevList.filter(item => item !== answer))
+    setBankOfVariants(prevList => {
+      let resultList = prevList;
+      if(destinationBoxName === 'variants_container'){
+        resultList = [...prevList, answer]
+      }
+
+      if(sourceBoxName === 'variants_container'){
+        resultList = prevList.filter(item => item !== answer)
+      }
+
+      return resultList
+    })
   }
 
   useEffect(()=>{
