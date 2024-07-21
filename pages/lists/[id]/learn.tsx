@@ -134,12 +134,12 @@ export default function Learn() {
               <Droppable droppableId={VARIANTS_CONTAINER} direction='horizontal'>
                 {(provided, snapshot) => (
                   <div className={styles.list_variants_container} ref={provided.innerRef} {...provided.droppableProps}>
-                    {bankOfVariants.map((variant, index) => <VariantCard variant={variant} index={index}/>)}
+                    {bankOfVariants.map((variant, index) => <div key={variant}><VariantCard variant={variant} index={index}/></div>)}
                   </div>
                 )}
               </Droppable>
               <div className={styles.list_words_container}>
-                {resultList.map(resultItem => <WordCard resultItem={resultItem}/>)}
+                {resultList.map(resultItem => <div key={resultItem.word}><WordCard resultItem={resultItem}/></div>)}
               </div>
           </div>
         </DragDropContext>

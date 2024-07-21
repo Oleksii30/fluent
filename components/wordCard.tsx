@@ -8,6 +8,12 @@ type Props = {
   resultItem: ResultItem
 }
 
+const borderColores = {
+  [AnswerStates.WRONG]: 'red',
+  [AnswerStates.RIGHT]: 'green',
+  [AnswerStates.IDLE]: 'black'
+}
+
 export default function WordCard({ resultItem }:Props) {
   return (
     <Droppable droppableId={resultItem.word}>
@@ -15,12 +21,12 @@ export default function WordCard({ resultItem }:Props) {
         <div
           className={styles.word_container}
           ref={provided.innerRef}
-          style={resultItem.state === AnswerStates.WRONG ? {borderColor: 'red'} : {}}
+          style={{borderColor: borderColores[resultItem.state]}}
           {...provided.droppableProps}
         >
           <span className={styles.word_text}>{resultItem.word}</span>
           <div>
-            {resultItem.answers.map((answer, index) => <VariantCard variant={answer} index={index} />)}
+            {resultItem.answers.map((answer, index) => <div key={answer}><VariantCard variant={answer} index={index} /></div>)}
           </div>
         </div>
       )}

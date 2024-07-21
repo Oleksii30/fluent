@@ -34,7 +34,7 @@ export default function Home({ repo }: InferGetServerSidePropsType<typeof getSer
     if(isLoggedIn){
       setLists(repoLists);
     }
-  }, [setLists, isLoggedIn, user])
+  }, [setLists, isLoggedIn, user, repoLists])
 
   const handleDeleteList = (listCreatedAt:number) => {
     deleteList(user.username, listCreatedAt);
