@@ -6,13 +6,24 @@ import useStore, { State } from 'store/lists';
 import { useAuthState } from 'context/auth';
 import VariantCard from 'components/variantCard';
 import WordCard from 'components/wordCard';
+import MainButton from 'components/buttons/main';
+import { AnswerStates } from 'enums/answerStates';
 
 import styles from 'styles/pages/Lists.module.css';
 
+type AnswerState = AnswerStates.RIGHT | AnswerStates.WRONG | AnswerStates.IDLE;
+
 export type ResultItem = {
   word: string,
-  answers: Array<string>
+  answers: Array<string>,
+  state: AnswerState
 }
+
+const VARIANTS_CONTAINER = 'variants_container';
+
+const shuffle = (array: string[]) => {
+  return array.sort(() => Math.random() - 0.5);
+};
 
 export default function Learn() {
   const router = useRouter();
@@ -47,15 +58,45 @@ export default function Learn() {
 
     setBankOfVariants(prevList => {
       let resultList = prevList;
-      if(destinationBoxName === 'variants_container'){
+      if(destinationBoxName === VARIANTS_CONTAINER){
         resultList = [...prevList, answer]
       }
 
-      if(sourceBoxName === 'variants_container'){
+      if(sourceBoxName === VARIANTS_CONTAINER){
         resultList = prevList.filter(item => item !== answer)
       }
 
       return resultList
+    })
+  }
+
+  const handleCheck = () => {
+    if(!currentList) {
+      return
+    }
+    setResultList(prevList => {
+      const  checkList = prevList.map(resultListItem => {
+        const rightExample = currentList.list.find(currentListItem => currentListItem.word === resultListItem.word);
+
+        if(!rightExample) {
+          return resultListItem
+        }
+        const rightExampleAnswers = [...rightExample.translations, ...rightExample.associations];
+        resultListItem.state = AnswerStates.RIGHT;
+
+        if(rightExampleAnswers.length !== resultListItem.answers.length) {
+          resultListItem.state = AnswerStates.WRONG;
+        }
+
+        for(let answer of resultListItem.answers) {
+          if(!rightExampleAnswers.includes(answer)) {
+            resultListItem.state = AnswerStates.WRONG;
+          }
+        }
+
+        return resultListItem
+      });
+      return checkList
     })
   }
 
@@ -69,8 +110,8 @@ export default function Learn() {
         variants = [...variants, ...item.translations, ...item.associations];
         words = [...words, item.word];
     }
-    setBankOfVariants(variants);
-    const resultList = words.map(word => ({word: word, answers: []}));
+    setBankOfVariants(shuffle(variants));
+    const resultList = words.map(word => ({word: word, answers: [], state:(AnswerStates.IDLE as AnswerState)}));
     setResultList(resultList);
 
   }, [currentList])
@@ -89,7 +130,8 @@ export default function Learn() {
         <DragDropContext onDragEnd={handleDragEnd}>
           <div className={styles.list_container}>
               <div className={styles.list_header}>{currentList.header}</div>
-              <Droppable droppableId="variants_container" direction='horizontal'>
+              <MainButton type='button' label='Check' onClick={handleCheck}/>
+              <Droppable droppableId={VARIANTS_CONTAINER} direction='horizontal'>
                 {(provided, snapshot) => (
                   <div className={styles.list_variants_container} ref={provided.innerRef} {...provided.droppableProps}>
                     {bankOfVariants.map((variant, index) => <VariantCard variant={variant} index={index}/>)}

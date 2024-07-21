@@ -2,7 +2,7 @@
     width: fit-content;
     padding: 0px 20px;
     margin: 10px 10px 10px 10px;
-    background-color: #ccc;
+    background-color: var(--lightest_red);
     border-radius: 10px;
     cursor: pointer;
     height: 40px;
