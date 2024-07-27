@@ -1,15 +1,17 @@
-import { useEffect } from 'react'
-import Link from 'next/link'
-import Header from 'components/header'
-import FormField from 'components/formField'
-import MainButton from 'components/buttons/main'
-import { useForm, SubmitHandler } from "react-hook-form"
-import { yupResolver } from '@hookform/resolvers/yup'
+import { useEffect } from 'react';
+import Link from 'next/link';
+import Header from 'components/header';
+import FormField from 'components/formField';
+import MainButton from 'components/buttons/main';
+import { useForm, SubmitHandler } from "react-hook-form";
+import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
-import { ILogin } from 'interfaces/login.interface'
-import { useAuthDispatch, useAuthState, login } from 'context/auth'
-import { useRouter } from 'next/navigation'
+import { ILogin } from 'interfaces/login.interface';
+import { useAuthDispatch, useAuthState, login } from 'context/auth';
+import { useRouter } from 'next/navigation';
 import { Routes } from 'enums/routes';
+import useStore, { State } from 'store/lists';
+
 
 import styles from 'styles/pages/Form.module.css'
 
@@ -20,8 +22,9 @@ const schema = yup.object({
 
 export default function LogIn() {
   const authDispatch = useAuthDispatch()
-  const { isLoggedIn } = useAuthState()
+  const { isLoggedIn, user } = useAuthState()
   const router = useRouter()
+  const getLists = useStore((state: State) => state.all);
   const { register, handleSubmit, formState: { errors } } = useForm<ILogin>({
     resolver: yupResolver(schema)
   })
@@ -31,7 +34,8 @@ export default function LogIn() {
 
   useEffect(() => {
     if(isLoggedIn) {
-      router.replace('/create')
+      router.replace('/create');
+      getLists(user.username);
     }
   }, [isLoggedIn, router])
 
