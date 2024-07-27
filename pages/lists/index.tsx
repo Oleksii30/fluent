@@ -4,37 +4,21 @@ import ListCard from 'components/listCard';
 import useStore, { URL, State } from 'store/lists';
 import { useAuthState } from 'context/auth'
 import { IList } from 'interfaces/list.interface';
-import type { InferGetServerSidePropsType, GetServerSideProps } from 'next';
 
 import styles from 'styles/pages/Lists.module.css';
 
-type Repo = {
-  items: Array<IList>
-}
+export default function Home() {
 
-export const getServerSideProps = async (req: any) => {
-  const { userId } = req.query;
-  const res = await fetch(`${URL}?userId=${userId}`);
-  const data = await res.json();
-  const repo: Repo = {items: data};
-
-  return { props: { repo } }
-}
-
-export default function Home({ repo }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-
-  const setLists = useStore((state: State) => state.all);
+  const getLists = useStore((state: State) => state.all);
   const deleteList = useStore((state: State) => state.delete);
   const { isLoggedIn, user } = useAuthState();
-  const storedLists = useStore((state: State) => state.lists);
-  const repoLists = repo.items;
-  const lists = storedLists || repoLists;
+  const lists = useStore((state: any) => state.lists);
 
   useEffect(() => {
     if(isLoggedIn){
-      setLists(repoLists);
+      getLists(user.username);
     }
-  }, [setLists, isLoggedIn, user, repoLists])
+  }, [getLists, isLoggedIn, user])
 
   const handleDeleteList = (listCreatedAt:number) => {
     deleteList(user.username, listCreatedAt);

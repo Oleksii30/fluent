@@ -6,9 +6,9 @@ import { toast } from 'react-toastify';
 export const URL = 'https://rek2ict79j.execute-api.us-west-2.amazonaws.com/Prod';
 
 export type State = {
-  lists: Array<IList> | null;
+  lists: Array<IList>;
   currentList: IList | null;
-  all: (items: Array<IList>) => void;
+  all: (userId: string) => void;
   getById: (userId: string, listId: string) => void;
   create: (listData:IList) => void;
   update: (listData:IList) => void;
@@ -17,10 +17,15 @@ export type State = {
 }
 
 const useStore = create<State>((set, get) => ({
- lists: null,
+ lists: [],
  currentList: null,
- all: async (items: Array<IList>) => {
-  set((state:State) => ({ lists: items, currentList: null }));
+ all: async (userId: string) => {
+  try {
+    const response = await axios.get(`${URL}?userId=${userId}`);
+    set((state:any) => ({ lists: response.data, currentList: null }));
+  }catch(error:any){
+    toast.error(error.response.data);
+  }
  },
  getById: async (userId: string, listId: string) => {
   const state = <State>get();
