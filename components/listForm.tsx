@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import EditableInput, { FieldTypes } from './editableInput';
 import IconButton from 'components/buttons/icon';
 import { useForm, useFieldArray } from "react-hook-form";
@@ -22,6 +23,13 @@ export default function ListForm({ item }:Props) {
       list: item ? item.list : []
     }
   });
+
+  useEffect(() => {
+    if(!item){
+      return
+    }
+    setValue('list', item.list);
+  }, [item])
 
   const { fields, append, remove, update } = useFieldArray({
     control,

@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Edit2, X, Save, Delete } from 'react-feather';
 import IconButton from 'components/buttons/icon';
+import { getTranslation } from 'api/translate';
+import { WordInput, IList } from 'interfaces/list.interface';
 import styles from 'styles/components/EditableInput.module.css';
 
 export enum FieldTypes {
@@ -57,8 +59,26 @@ export default function EditableInput({
     return getValues()[fieldName];
   }
 
-  const handleSave = () => {
-    const values = getValues();
+  async function pushTranslationToValues(values: IList){
+    const value = getInitialValue();
+    const translation = await getTranslation(value);
+    const list = values.list.map((item:WordInput) => {
+      if(item.word === value && item.translations.length === 0){
+        item.translations = [translation]
+      }
+      return item
+    })
+    values = {...values, list: list};
+    return values;
+  }
+
+  const handleSave = async () => {
+    let values = getValues();
+
+    if(fieldName.includes('word')){
+      values = await pushTranslationToValues(values)
+    }
+
     submitForm(values);
     toggleEditMode();
     setInitValue(getInitialValue());
