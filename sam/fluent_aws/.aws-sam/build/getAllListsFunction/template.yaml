@@ -115,6 +115,21 @@ Resources:
           Properties:
             Path: /
             Method: PUT
+  translateFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/translate.handler
+      Runtime: nodejs20.x
+      Architectures:
+      - x86_64
+      MemorySize: 128
+      Timeout: 100
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /translate
+            Method: GET
   ListsTable:
     Type: AWS::DynamoDB::Table
     Properties:
