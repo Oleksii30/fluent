@@ -34,7 +34,6 @@ export default function Learn() {
 
   const getListById = useStore((state: State) => state.getById);
   const currentList = useStore((state: State) => state.currentList);
-  console.log(currentList)
 
   const handleDragEnd = (result:any) => {
     const destinationBoxName = result.destination.droppableId;
@@ -121,7 +120,6 @@ export default function Learn() {
     if(!user || !id){
       return
     }
-    console.log('get list works')
     getListById(user.username, id as string)
   }, [id, user, getListById])
 
