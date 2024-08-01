@@ -7,6 +7,7 @@ import { useAuthState } from 'context/auth';
 import Link from 'next/link';
 import { Routes } from 'enums/routes';
 import MainButton from 'components/buttons/main';
+import SavingScreen from 'components/savingScreen';
 
 import styles from 'styles/pages/Lists.module.css';
 
@@ -17,6 +18,7 @@ export default function List() {
 
   const getListById = useStore((state: State) => state.getById);
   const currentList = useStore((state: State) => state.currentList);
+  const isSaving = useStore((state: State) => state.isSaving);
 
   useEffect(() => {
     if(!user || !id){
@@ -33,9 +35,8 @@ export default function List() {
           <MainButton label='Learn this list' type='button'/>
         </Link>
       </div>
-      {
-        currentList && <ListForm item={currentList}/>
-      }
+      {currentList && <ListForm item={currentList}/>}
+      {isSaving && <SavingScreen/>}
     </div>
   )
 }
