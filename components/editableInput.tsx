@@ -3,6 +3,7 @@ import { Edit2, X, Save, Delete } from 'react-feather';
 import IconButton from 'components/buttons/icon';
 import { getTranslation } from 'api/translate';
 import { WordInput, IList } from 'interfaces/list.interface';
+import useSettingsStore, { State as SettingsState } from "store/settings";
 import styles from 'styles/components/EditableInput.module.css';
 
 export enum FieldTypes {
@@ -41,6 +42,9 @@ export default function EditableInput({
   const [initValue, setInitValue] = useState(getInitialValue());
   const [isEditMode, setIsEditMode] = useState(false);
   const [fieldWidth, setFieldWidth] = useState(calculateFieldWidth(initValue || placeholder));
+
+  const isAutoTranslate = useSettingsStore((state: SettingsState) => state.isAutoTranslate);
+
   const toggleEditMode = () => {
     setIsEditMode((prevState) => !prevState);
   };
@@ -75,7 +79,7 @@ export default function EditableInput({
   const handleSave = async () => {
     let values = getValues();
 
-    if(fieldName.includes('word')){
+    if(fieldName.includes('word') && isAutoTranslate){
       values = await pushTranslationToValues(values)
     }
 

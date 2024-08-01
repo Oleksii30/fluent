@@ -48,6 +48,11 @@ export default function Header() {
 				}
 				{isLoggedIn &&
 					<>
+						<h4>
+							<Link className={styles.link} href={Routes.SETTINGS}>
+								Settings
+							</Link>
+						</h4>
 						<h4 className={styles.link} onClick={handleCreateLink}>
 							Create
 						</h4>

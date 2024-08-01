@@ -4,5 +4,6 @@ export enum Routes {
     LOGIN = '/login',
     LISTS = '/lists',
     CREATE = '/create',
-    RESTORE_PASSWORD = '/restorepassword'
+    RESTORE_PASSWORD = '/restorepassword',
+    SETTINGS = '/settings',
 }
