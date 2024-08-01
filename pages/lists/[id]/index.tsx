@@ -20,6 +20,8 @@ export default function List() {
   const currentList = useStore((state: State) => state.currentList);
   const isSaving = useStore((state: State) => state.isSaving);
 
+  console.log(currentList)
+
   useEffect(() => {
     if(!user || !id){
       return

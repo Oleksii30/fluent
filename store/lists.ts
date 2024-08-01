@@ -35,7 +35,7 @@ const useStore = create<State>((set, get) => ({
 
   if(list) {
     set((state:State) => ({ currentList: list }));
-    return;
+      //return;
   }
 
   try{
