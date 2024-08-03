@@ -8,17 +8,15 @@ const lambdaHandler = async (event) => {
 
   const word = event.queryStringParameters.word;
 
-  const { translation } = await translate(word, { to: 'uk' });
+  const { text } = await translate(word, { to: 'uk' });
 
-  if(!translation){
+  if(!text){
     throw new createError(404, 'Failed to translate the word');
   }
 
-  const item = {text: translation};
-
   const response = {
     statusCode: 200,
-    body: JSON.stringify(item)
+    body: text
   };
 
   return response;

@@ -8,6 +8,7 @@ import * as yup from "yup";
 import { ISignup } from 'interfaces/signup.interface'
 import { useAuthDispatch, signUpUser, useAuthState } from 'context/auth'
 import { useRouter } from 'next/navigation'
+import useSettingsStore, { State as SettingsState } from "store/settings";
 
 import styles from 'styles/pages/Form.module.css'
 
@@ -27,8 +28,9 @@ const schema = yup.object({
 
 export default function SignUp() {
   const authDispatch = useAuthDispatch()
-  const { isLoggedIn } = useAuthState()
+  const { isLoggedIn, user } = useAuthState()
   const router = useRouter()
+  const createSettings = useSettingsStore((state: SettingsState) => state.create);
   const { register, handleSubmit, formState: { errors } } = useForm<ISignup>({
     resolver: yupResolver(schema)
   });
@@ -37,9 +39,10 @@ export default function SignUp() {
   }
 
   useEffect(() => {
-    if(isLoggedIn) {
-      router.replace('/create')
+    if(!isLoggedIn) {
+      return
     }
+    router.replace('/create');
   }, [isLoggedIn, router])
 
   return (

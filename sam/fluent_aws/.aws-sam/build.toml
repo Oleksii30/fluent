@@ -7,6 +7,6 @@ architecture = "x86_64"
 handler = "src/handlers/get-all-lists.handler"
 manifest_hash = "50153f7b8de9a5ef9b73e5bbec6dda02"
 packagetype = "Zip"
-functions = ["getAllListsFunction", "getListByIdFunction", "deleteListFunction", "createNewListFunction", "updateListFunction", "translateFunction"]
+functions = ["getAllListsFunction", "getListByIdFunction", "deleteListFunction", "createNewListFunction", "updateListFunction", "translateFunction", "createSettingsFunction", "updateSettingsFunction", "getSettingsFunction"]
 
 [layer_build_definitions]

@@ -11,6 +11,7 @@ import { useAuthDispatch, useAuthState, login } from 'context/auth';
 import { useRouter } from 'next/navigation';
 import { Routes } from 'enums/routes';
 import useStore, { State } from 'store/lists';
+import useSettingsStore, { State as SettingsState } from 'store/settings';
 
 
 import styles from 'styles/pages/Form.module.css'
@@ -25,6 +26,7 @@ export default function LogIn() {
   const { isLoggedIn, user } = useAuthState()
   const router = useRouter()
   const getLists = useStore((state: State) => state.all);
+  const getSettings = useSettingsStore((state: SettingsState) => state.all);
   const { register, handleSubmit, formState: { errors } } = useForm<ILogin>({
     resolver: yupResolver(schema)
   })
@@ -36,6 +38,7 @@ export default function LogIn() {
     if(isLoggedIn) {
       router.replace('/create');
       getLists(user.username);
+      getSettings(user.username);
     }
   }, [isLoggedIn, router])
 
