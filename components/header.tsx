@@ -17,6 +17,7 @@ export default function Header() {
 	const nullCurrentList = useStore((state: State) => state.nullCurrentList);
 
 	const handleLogoutLink = () => {
+		nullCurrentList();
 		logOut(authDispatch);
 		router.replace('/');
 	}
