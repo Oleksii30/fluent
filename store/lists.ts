@@ -14,6 +14,7 @@ export type State = {
   update: (listData:IList) => void;
   delete: (userId: string, listId: number) => void;
   nullCurrentList: () => void;
+  changeIsSaving: (ISaving:boolean) => void;
   isSaving: boolean;
 }
 
@@ -49,8 +50,8 @@ const useStore = create<State>((set, get) => ({
     set((state:State) => ({ isSaving: true }));
     const response = await axios.post(URL, listData);
     const createdList = await axios.get(`${URL}/${listData.createdAt}?userId=${listData.userId}`);
-    set((state:State) => ({ currentList: createdList.data }));
     set((state:State) => ({ isSaving: false }));
+    set((state:State) => ({ currentList: createdList.data }));
   }catch(error:any){
     set((state:State) => ({ isSaving: false }));
     toast.error(error.response.data);
@@ -61,8 +62,8 @@ const useStore = create<State>((set, get) => ({
     set((state:State) => ({ isSaving: true }));
     const response = await axios.put(URL, listData);
     const list = await axios.get(`${URL}/${listData.createdAt}?userId=${listData.userId}`);
-    set((state:State) => ({ currentList: list.data }));
     set((state:State) => ({ isSaving: false }));
+    set((state:State) => ({ currentList: list.data }));
   }catch(error:any){
     set((state:State) => ({ isSaving: false }));
     toast.error(error.response.data);
@@ -79,6 +80,9 @@ const useStore = create<State>((set, get) => ({
  },
  nullCurrentList: () => {
   set((state:State) => ({ currentList: null }));
+ },
+ changeIsSaving: (isSaving:boolean) => {
+  set((state:State) => ({ isSaving: isSaving }));
  }
 }));
 export default useStore;

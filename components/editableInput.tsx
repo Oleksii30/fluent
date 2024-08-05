@@ -4,6 +4,7 @@ import IconButton from 'components/buttons/icon';
 import { getTranslation } from 'api/translate';
 import { WordInput, IList } from 'interfaces/list.interface';
 import useSettingsStore, { State as SettingsState } from "store/settings";
+import useStore, { State } from 'store/lists';
 import styles from 'styles/components/EditableInput.module.css';
 
 export enum FieldTypes {
@@ -44,6 +45,7 @@ export default function EditableInput({
   const [fieldWidth, setFieldWidth] = useState(calculateFieldWidth(initValue || placeholder));
 
   const isAutoTranslate = useSettingsStore((state: SettingsState) => state.isAutoTranslate);
+  const changeIsSaving = useStore((state: State) => state.changeIsSaving);
 
   const toggleEditMode = () => {
     setIsEditMode((prevState) => !prevState);
@@ -79,6 +81,7 @@ export default function EditableInput({
   const handleSave = async () => {
     let values = getValues();
 
+    changeIsSaving(true);
     if(fieldName.includes('word') && isAutoTranslate){
       values = await pushTranslationToValues(values)
     }
