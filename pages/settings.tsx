@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import Header from 'components/header';
 import AutoTranslate from 'components/settings/autoTranslate';
+import Lenguage from 'components/settings/language';
 
 import styles from 'styles/pages/Settings.module.css';
 
@@ -16,6 +17,7 @@ export default function Settings() {
       <Header/>
       <main className={styles.main}>
         <AutoTranslate/>
+        <Lenguage/>
       </main>
     </div>
   )

@@ -8,6 +8,9 @@ import { WordInput, IList } from 'interfaces/list.interface';
 import { useAuthState } from 'context/auth';
 import { format } from "date-fns";
 import { DateFormats } from 'enums/dateFormats';
+import useSettingsStore, { State as SettingsState } from 'store/settings';
+import { options as languagesArray } from './settings/languageOptions';
+import { calculateLanguageOptions } from 'helpers/language';
 
 import styles from 'styles/components/ListForm.module.css';
 
@@ -16,6 +19,7 @@ type Props = {
 }
 
 export default function ListForm({ item }:Props) {
+  const languages = useSettingsStore((state: SettingsState) => state.languages);
   const { control, register, handleSubmit, setFocus, getValues, setValue } = useForm({
     defaultValues:{
       header: item ? item.header : '',
@@ -122,8 +126,7 @@ export default function ListForm({ item }:Props) {
             className={styles.select_input}
             onChange={handleChangeLanguage}
           >
-            <option value='en'>English</option>
-            <option value='es'>Spanish</option>
+            {calculateLanguageOptions(languages, languagesArray).map(item => <option key={item.value} value={item.value}>{item.label}</option>)}
           </select>
           {(fields as Array<WordInput>).map((field, index) => (
               <div key={field.id} className={styles.word_field_container}>

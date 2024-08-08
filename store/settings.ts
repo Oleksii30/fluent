@@ -7,13 +7,17 @@ export const URL = 'https://rek2ict79j.execute-api.us-west-2.amazonaws.com/Prod'
 
 export type State = {
   isAutoTranslate: boolean;
+  languages:Array<string>;
   all: (userId: string) => void;
-	create: (settingsData: ISettings) => void;
-	updateAutoTranslate: (userId: string, isAutoTranslate:boolean) => void;
+  create: (settingsData: ISettings) => void;
+  updateAutoTranslate: (userId: string, isAutoTranslate:boolean) => void;
+  addLanguage: (userId: string, language:string) => void;
+  deleteLanguage: (userId: string, language:string) => void;
 }
 
 const useSettingsStore = create<State>((set, get) => ({
   isAutoTranslate: false,
+  languages: ['en'],
 
  	all: async (userId: string) => {
 		try {
@@ -22,8 +26,11 @@ const useSettingsStore = create<State>((set, get) => ({
 				return
 			}
 
-			const { isAutoTranslate } = response.data[0];
-			set((state:State) => ({ isAutoTranslate: isAutoTranslate }));
+			const { isAutoTranslate, languages } = response.data[0];
+			set((state:State) => ({
+				isAutoTranslate: isAutoTranslate,
+				languages: languages
+			}));
 		}catch(error:any){
 			toast.error(error.response.data);
 		}
@@ -46,7 +53,35 @@ const useSettingsStore = create<State>((set, get) => ({
 			set((state:State) => ({ isAutoTranslate: isAutoTranslate }));
 			const response = await axios.put(`${URL}/settings`, body);
 		}catch(error:any){
-			console.log(error)
+			toast.error('Failed to update');
+		}
+	},
+	addLanguage: async (userId: string, language:string) => {
+		try{
+			const state = <State>get();
+			const body = {
+				...state,
+				languages: [...state.languages, language],
+				userId: userId
+			}
+			const response = await axios.put(`${URL}/settings`, body);
+			set((state:State) => ({ languages: body.languages }));
+		}catch(error:any){
+			toast.error('Failed to update');
+		}
+	},
+	deleteLanguage: async (userId: string, language:string) => {
+		try{
+			const state = <State>get();
+			const body = {
+				...state,
+				languages: state.languages.filter(item => item !== language),
+				userId: userId
+			}
+			const response = await axios.put(`${URL}/settings`, body);
+			set((state:State) => ({ languages: body.languages }));
+		}catch(error:any){
+			toast.error('Failed to update');
 		}
 	}
 }));
