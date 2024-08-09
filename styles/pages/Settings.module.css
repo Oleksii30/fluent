@@ -1,5 +1,5 @@
 .main {
-    min-height: calc(100vh - var(--header_height));
-    flex: 1;
+	min-height: calc(100vh - var(--header_height));
+	flex: 1;
 }
 

@@ -3,11 +3,9 @@ import Logo from './logo';
 import { useRouter } from 'next/router';
 import { useAuthDispatch, useAuthState, logOut } from 'context/auth';
 import useStore, { State }  from 'store/lists';
-
 import { Routes } from 'enums/routes';
 
 import styles from 'styles/components/Header.module.css';
-
 
 export default function Header() {
 	const router = useRouter()

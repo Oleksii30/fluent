@@ -1,27 +1,27 @@
 .label {
-    margin-bottom: 5px;
+  margin-bottom: 5px;
 }
 
 .field {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    padding-bottom: 12px;
-    margin-bottom: 7px;
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	padding-bottom: 12px;
+	margin-bottom: 7px;
 }
 
 .input {
-    border-radius: 5px;
-    border: 1px solid var(--medium_grey);
-    padding: 5px;
-    margin-bottom: 10px;
+	border-radius: 5px;
+	border: 1px solid var(--medium_grey);
+	padding: 5px;
+	margin-bottom: 10px;
 }
 
 .input:focus {
-    outline: none;
+  outline: none;
 }
 
 .error_message {
-    color: red;
-    font-size: 14px;
+	color: red;
+	font-size: 14px;
 }

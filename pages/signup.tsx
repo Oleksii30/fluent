@@ -1,16 +1,15 @@
-import { useEffect } from 'react'
-import Header from 'components/header'
-import FormField from 'components/formField'
-import MainButton from 'components/buttons/main'
-import { useForm, SubmitHandler } from "react-hook-form"
-import { yupResolver } from '@hookform/resolvers/yup'
+import { useEffect } from 'react';
+import Header from 'components/header';
+import FormField from 'components/formField';
+import MainButton from 'components/buttons/main';
+import { useForm, SubmitHandler } from "react-hook-form";
+import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
-import { ISignup } from 'interfaces/signup.interface'
-import { useAuthDispatch, signUpUser, useAuthState } from 'context/auth'
-import { useRouter } from 'next/navigation'
-import useSettingsStore, { State as SettingsState } from "store/settings";
+import { ISignup } from 'interfaces/signup.interface';
+import { useAuthDispatch, signUpUser, useAuthState } from 'context/auth';
+import { useRouter } from 'next/navigation';
 
-import styles from 'styles/pages/Form.module.css'
+import styles from 'styles/pages/Form.module.css';
 
 const schema = yup.object({
   email: yup.string().email('Email should be well formated').required('Email is required'),
@@ -30,7 +29,6 @@ export default function SignUp() {
   const authDispatch = useAuthDispatch()
   const { isLoggedIn, user } = useAuthState()
   const router = useRouter()
-  const createSettings = useSettingsStore((state: SettingsState) => state.create);
   const { register, handleSubmit, formState: { errors } } = useForm<ISignup>({
     resolver: yupResolver(schema)
   });

@@ -4,7 +4,7 @@ import { useAuthState } from 'context/auth';
 import styles from 'styles/components/Autotranslate.module.css';
 
 export default function AutoTranslate() {
-	const { isLoggedIn, user } = useAuthState();
+	const { user } = useAuthState();
 
 	const isAutoTranslate = useSettingsStore((state: SettingsState) => state.isAutoTranslate);
 	const updateAutoTranslate = useSettingsStore((state: SettingsState) => state.updateAutoTranslate);

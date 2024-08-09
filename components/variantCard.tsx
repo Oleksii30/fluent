@@ -3,7 +3,7 @@ import styles from 'styles/components/VariantCard.module.css';
 
 type Props = {
   variant: string;
-  index: number
+  index: number;
 }
 
 export default function VariantCard({ variant, index }:Props) {

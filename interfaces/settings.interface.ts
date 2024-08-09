@@ -1,4 +1,4 @@
 export interface ISettings {
-    userId: string;
-    isAutoTranslate: boolean;
+	userId: string;
+	isAutoTranslate: boolean;
 }

@@ -1,5 +1,4 @@
 import { useContext } from "react";
-
 import { AuthProvider } from "./AuthProvider";
 import { AuthStateContext, AuthDispatchContext } from "./Context";
 import { signUpUser, login, getSession, logOut, forgotPassword, confirmPassword } from "./actions";

@@ -1,7 +1,6 @@
-import React, { useReducer } from "react"
-
-import { AuthStateContext, AuthDispatchContext } from "./Context"
-import authReducer, { initialState } from "./reducer"
+import React, { useReducer } from "react";
+import { AuthStateContext, AuthDispatchContext } from "./Context";
+import authReducer, { initialState } from "./reducer";
 
 type Props = {
   children: JSX.Element,

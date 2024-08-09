@@ -1,5 +1,5 @@
 export enum AnswerStates {
-    RIGHT = "right",
-    WRONG = "wrong",
-    IDLE = "idle"
+	RIGHT = "right",
+	WRONG = "wrong",
+	IDLE = "idle"
 }

@@ -11,7 +11,7 @@ import styles from 'styles/components/Language.module.css';
 
 export default function Language() {
 	const [selectValue, setSelectValue] = useState();
-	const { isLoggedIn, user } = useAuthState();
+	const { user } = useAuthState();
     const languages = useSettingsStore((state: SettingsState) => state.languages);
 	const addLanguage = useSettingsStore((state: SettingsState) => state.addLanguage);
 
@@ -28,8 +28,8 @@ export default function Language() {
 
 	return (
 		<div className={styles.language_container}>
-            {calculateLanguageOptions(languages, options).map(language => <div key={language.value}><LanguageCard language={language}/></div>)}
-            <div style={{width: 200}}><Select options={options} onChange={handleChange}/></div>
+      {calculateLanguageOptions(languages, options).map(language => <div key={language.value}><LanguageCard language={language}/></div>)}
+      <div style={{width: 200}}><Select options={options} onChange={handleChange}/></div>
 			<IconButton size={30} onClick={handleSubmit}>
 				<Plus size={30}/>
 			</IconButton>

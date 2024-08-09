@@ -14,7 +14,7 @@ import useStore, { State } from 'store/lists';
 import useSettingsStore, { State as SettingsState } from 'store/settings';
 
 
-import styles from 'styles/pages/Form.module.css'
+import styles from 'styles/pages/Form.module.css';
 
 const schema = yup.object({
   email: yup.string().email('Email should be well formatted').required('Email is required'),
