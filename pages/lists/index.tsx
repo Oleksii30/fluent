@@ -44,7 +44,7 @@ export default function Home() {
     <div className={styles.container}>
       <Header/>
       <main className={styles.main}>
-        <Filter items={lists} setItems={setFilteredLists}/>
+        {lists.length > 0 && <Filter items={lists} setItems={setFilteredLists}/>}
         {renderLists()}
       </main>
     </div>

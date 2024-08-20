@@ -38,7 +38,7 @@ export default function Learn() {
   const handleDragEnd = (result:any) => {
     const destinationBoxName = result.destination.droppableId;
     const sourceBoxName = result.source.droppableId;
-    const answer = result.draggableId;
+    const answer = result.draggableId.split('$')[0];
     if(sourceBoxName === destinationBoxName){
       return
     }
@@ -63,7 +63,8 @@ export default function Learn() {
       }
 
       if(sourceBoxName === VARIANTS_CONTAINER){
-        resultList = prevList.filter(item => item !== answer)
+        const idexOfAnswer = prevList.indexOf(answer);
+        resultList = [...prevList.slice(0, idexOfAnswer), ...prevList.slice(idexOfAnswer+1, prevList.length)];
       }
 
       return resultList
@@ -134,7 +135,7 @@ export default function Learn() {
               <Droppable droppableId={VARIANTS_CONTAINER} direction='horizontal'>
                 {(provided, snapshot) => (
                   <div className={styles.list_variants_container} ref={provided.innerRef} {...provided.droppableProps}>
-                    {bankOfVariants.map((variant, index) => <div key={variant}><VariantCard variant={variant} index={index}/></div>)}
+                    {bankOfVariants.map((variant, index) => <div key={index}><VariantCard variant={variant} index={index}/></div>)}
                   </div>
                 )}
               </Droppable>
