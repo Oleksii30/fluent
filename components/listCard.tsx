@@ -3,7 +3,7 @@ import { IList } from 'interfaces/list.interface';
 import { format } from "date-fns";
 import { DateFormats } from 'enums/dateFormats';
 import { Routes } from 'enums/routes';
-import { Delete } from 'react-feather';
+import { Delete, Check } from 'react-feather';
 import IconButton from 'components/buttons/icon';
 
 import styles from 'styles/components/ListCard.module.css';
@@ -23,7 +23,10 @@ export default function ListCard({ list, onDeleteList }:Props) {
             <div>{list.language}</div>
             <div>{format(new Date(list.createdAt), DateFormats.YYYY_MM_DD)}</div>
           </div>
-          <div className={styles.title}>{list.header}</div>
+          <div className={styles.title}>
+            {list.header}
+            {list.isLearned && <div style={{marginLeft: 10, paddingTop: 3}}><Check color='green'/></div>}
+          </div>
         </div>
       </Link>
       <div className={styles.deleteButton}>

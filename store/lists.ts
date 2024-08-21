@@ -16,6 +16,7 @@ export type State = {
   nullCurrentList: () => void;
   changeIsSaving: (ISaving:boolean) => void;
   isSaving: boolean;
+  changeListStatus: (listData:IList) => void;
 }
 
 const useStore = create<State>((set, get) => ({
@@ -83,7 +84,14 @@ const useStore = create<State>((set, get) => ({
  },
  changeIsSaving: (isSaving:boolean) => {
   set((state:State) => ({ isSaving: isSaving }));
- }
+ },
+ changeListStatus: async (listData:IList) => {
+  try{
+    const response = await axios.put(URL, listData);
+  }catch(error:any){
+    toast.error(error.response.data);
+  }
+ },
 }));
 export default useStore;
 

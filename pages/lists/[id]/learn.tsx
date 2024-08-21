@@ -8,8 +8,10 @@ import VariantCard from 'components/variantCard';
 import WordCard from 'components/wordCard';
 import MainButton from 'components/buttons/main';
 import { AnswerStates } from 'enums/answerStates';
+import { Check } from 'react-feather';
 
 import styles from 'styles/pages/Lists.module.css';
+import { IList } from 'interfaces/list.interface';
 
 type AnswerState = AnswerStates.RIGHT | AnswerStates.WRONG | AnswerStates.IDLE;
 
@@ -25,6 +27,13 @@ const shuffle = (array: string[]) => {
   return array.sort(() => Math.random() - 0.5);
 };
 
+const checkResultList = (resultList:Array<ResultItem>) => {
+  if(resultList.length === 0){
+    return false;
+  }
+  return !resultList.some(item => item.state === AnswerStates.WRONG || item.state === AnswerStates.IDLE);
+}
+
 export default function Learn() {
   const router = useRouter();
   const { id } = router.query;
@@ -32,8 +41,11 @@ export default function Learn() {
   const [resultList, setResultList] = useState<Array<ResultItem>>([]);
   const [bankOfVariants, setBankOfVariants] = useState<Array<string>>([]);
 
+  const changeListStatus = useStore((state: State) => state.changeListStatus);
   const getListById = useStore((state: State) => state.getById);
   const currentList = useStore((state: State) => state.currentList);
+
+  const [isListLearned, setIsListLearned] = useState(false);
 
   const handleDragEnd = (result:any) => {
     const destinationBoxName = result.destination.droppableId;
@@ -102,6 +114,16 @@ export default function Learn() {
   }
 
   useEffect(()=>{
+    const isListChecked = checkResultList(resultList);
+    if(!isListChecked || currentList?.isLearned){
+      return
+    }
+    const body = {...currentList, isLearned: true};
+    setIsListLearned(true);
+    changeListStatus(body as IList);
+  }, [resultList])
+
+  useEffect(()=>{
     if(!currentList){
         return
     }
@@ -114,6 +136,8 @@ export default function Learn() {
     setBankOfVariants(shuffle(variants));
     const resultList = words.map(word => ({word: word, answers: [], state:(AnswerStates.IDLE as AnswerState)}));
     setResultList(resultList);
+
+    setIsListLearned(currentList.isLearned);
 
   }, [currentList])
 
@@ -130,7 +154,10 @@ export default function Learn() {
       {currentList &&
         <DragDropContext onDragEnd={handleDragEnd}>
           <div className={styles.list_container}>
-              <div className={styles.list_header}>{currentList.header}</div>
+              <div className={styles.list_header}>
+                {currentList.header}
+                {isListLearned && <div style={{marginLeft: 10, paddingTop: 10}}><Check color='green'/></div>}
+              </div>
               <MainButton type='button' label='Check' onClick={handleCheck}/>
               <Droppable droppableId={VARIANTS_CONTAINER} direction='horizontal'>
                 {(provided, snapshot) => (

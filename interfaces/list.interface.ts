@@ -11,4 +11,5 @@ export interface IList {
   header: string;
   language: string;
   list: Array<WordInput>;
+  isLearned: boolean;
 }

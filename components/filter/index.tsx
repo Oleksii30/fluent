@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Name from "./name";
 import Language from "./language";
+import NotLearned from "./notLearned";
 import { IList } from 'interfaces/list.interface';
 
 import styles from 'styles/components/Filter.module.css';
@@ -13,6 +14,7 @@ type Props = {
 const defaultFilter = {
 	name: '',
 	lang: '',
+	showNotLearned: false
 }
 
 export default function Filter({ items, setItems }:Props) {
@@ -32,6 +34,13 @@ export default function Filter({ items, setItems }:Props) {
 		}))
 	}
 
+	const handleChangeNotLearned = (showNotLearned: boolean) => {
+		setFilter(prevFilter => ({
+			...prevFilter,
+			showNotLearned: showNotLearned
+		}))
+	}
+
 	useEffect(() => {
 		const filtered = items
 			.filter(item => item.header.includes(filter.name))
@@ -41,14 +50,23 @@ export default function Filter({ items, setItems }:Props) {
 				}
 				return item.language === filter.lang
 			})
+			.filter(item => {
+				if(!filter.showNotLearned){
+					return true
+				}
+				return item.isLearned === false
+			})
 		setItems(filtered);
 	}, [filter, items])
+
   return (
 		<div className={styles.main_container}>
 			<h4 style={{marginRight:10}}>List Header</h4>
 			<Name onChangeName={handleChangeName}/>
 			<h4 style={{marginRight:10, marginLeft:20}}>Language</h4>
 			<Language onChangeLanguage={handleChangeLanguge}/>
+			<h4 style={{marginRight:10, marginLeft:20}}>Not Learned</h4>
+			<NotLearned onChangeNotLearned={handleChangeNotLearned} isChecked={filter.showNotLearned}/>
 		</div>
   )
 }
