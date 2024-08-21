@@ -19,8 +19,10 @@ export default function ListCard({ list, onDeleteList }:Props) {
     <div style={{position:'relative', width: 'fit-content', height: 'fit-content'}}>
       <Link href={`${Routes.LISTS}/${list.createdAt}`}>
         <div className={styles.cardContainer}>
-          <div className={styles.language}>{list.language}</div>
-          <div className={styles.date}>{format(new Date(list.createdAt), DateFormats.YYYY_MM_DD)}</div>
+          <div className={styles.cardHeader}>
+            <div>{list.language}</div>
+            <div>{format(new Date(list.createdAt), DateFormats.YYYY_MM_DD)}</div>
+          </div>
           <div className={styles.title}>{list.header}</div>
         </div>
       </Link>
