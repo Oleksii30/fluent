@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useMediaQuery } from 'react-responsive';
 import Header from 'components/header';
 import ListCard from 'components/listCard';
 import useStore, { URL, State } from 'store/lists';
@@ -15,6 +16,10 @@ export default function Home() {
   const { isLoggedIn, user } = useAuthState();
   const lists = useStore((state: any) => state.lists);
   const [filteredLists, setFilteredLists] = useState(lists);
+
+  const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1224px)' });
+
+  const showFilters = lists.length > 0 && !isTabletOrMobile;
 
   useEffect(() => {
     if(isLoggedIn){
@@ -44,7 +49,7 @@ export default function Home() {
     <div className={styles.container}>
       <Header/>
       <main className={styles.main}>
-        {lists.length > 0 && <Filter items={lists} setItems={setFilteredLists}/>}
+        {showFilters && <Filter items={lists} setItems={setFilteredLists}/>}
         {renderLists()}
       </main>
     </div>

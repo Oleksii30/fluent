@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { useMediaQuery } from 'react-responsive';
 import { IList } from 'interfaces/list.interface';
 import { format } from "date-fns";
 import { DateFormats } from 'enums/dateFormats';
@@ -15,6 +16,7 @@ type Props = {
 }
 
 export default function ListCard({ list, onDeleteList }:Props) {
+  const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1224px)' });
   return (
     <div style={{position:'relative', width: 'fit-content', height: 'fit-content'}}>
       <Link href={`${Routes.LISTS}/${list.createdAt}`}>
@@ -25,7 +27,7 @@ export default function ListCard({ list, onDeleteList }:Props) {
           </div>
           <div className={styles.title}>
             {list.header}
-            {list.isLearned && <div style={{marginLeft: 10, paddingTop: 3}}><Check color='green'/></div>}
+            {list.isLearned && <div style={{marginLeft: 10, paddingTop: isTabletOrMobile ? 0 : 3}}><Check color='green'/></div>}
           </div>
         </div>
       </Link>
