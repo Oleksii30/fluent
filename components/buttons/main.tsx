@@ -22,7 +22,8 @@ const submitButton = {
 }
 
 const submitButtonDisabled = {
-	background: 'lightgrey'
+	background: 'lightgrey',
+	cursor: 'unset'
 }
 
 export default function MainButton({ label, disabled=false, type='submit', onClick, styles={} }:Props) {

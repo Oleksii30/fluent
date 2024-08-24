@@ -29,7 +29,7 @@ const cancelButtonStyles = {
 
 const deleteFrase = "delete list";
 
-Modal.setAppElement('#main');
+//Modal.setAppElement('#main');
 
 export default function ConfirmDelete({ isOpen, closeModal, confirmDelete }:Props) {
   const [isDisabledConfirm, setIsDisabledConfirm] = useState(true);

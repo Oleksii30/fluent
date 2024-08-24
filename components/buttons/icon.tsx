@@ -12,7 +12,7 @@ type Props = {
 export default function IconButton({ children, disabled=false, onClick, type, size }: Props) {
 
 	return (
-		<button style={{height: size}} className={styles.icon_button} onClick={onClick} disabled={disabled} type={type ? type : 'button'}>
+		<button className={styles.icon_button} onClick={onClick} disabled={disabled} type={type ? type : 'button'}>
 			{children}
 		</button>
 	)

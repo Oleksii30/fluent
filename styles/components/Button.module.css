@@ -7,4 +7,14 @@
 	font: inherit;
 	border-radius: 0;
 	cursor: pointer;
+	padding: 7px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 50%;
+	transition: all 0.2s;
+}
+
+.icon_button:hover {
+	background-color: lightgrey;
 }

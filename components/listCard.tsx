@@ -4,7 +4,7 @@ import { IList } from 'interfaces/list.interface';
 import { format } from "date-fns";
 import { DateFormats } from 'enums/dateFormats';
 import { Routes } from 'enums/routes';
-import { Delete, Check } from 'react-feather';
+import { Check, XSquare } from 'react-feather';
 import IconButton from 'components/buttons/icon';
 
 import styles from 'styles/components/ListCard.module.css';
@@ -33,7 +33,7 @@ export default function ListCard({ list, onDeleteList }:Props) {
       </Link>
       <div className={styles.deleteButton}>
         <IconButton size={30} onClick={() => onDeleteList(list.createdAt)}>
-          <Delete size={30}/>
+          <XSquare size={30}/>
         </IconButton>
       </div>
     </div>

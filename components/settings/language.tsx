@@ -29,7 +29,7 @@ export default function Language() {
 	return (
 		<div className={styles.language_container}>
       {calculateLanguageOptions(languages, options).map(language => <div key={language.value}><LanguageCard language={language}/></div>)}
-      <div style={{width: 200}}><Select options={options} onChange={handleChange}/></div>
+      <div style={{width: 200, marginRight: 10}}><Select options={options} onChange={handleChange}/></div>
 			<IconButton size={30} onClick={handleSubmit}>
 				<Plus size={30}/>
 			</IconButton>
