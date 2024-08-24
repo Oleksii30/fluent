@@ -8,6 +8,7 @@ export const URL = 'https://rek2ict79j.execute-api.us-west-2.amazonaws.com/Prod'
 export type State = {
   isAutoTranslate: boolean;
   languages:Array<string>;
+	isSaving: boolean;
   all: (userId: string) => void;
   create: (settingsData: ISettings) => void;
   updateAutoTranslate: (userId: string, isAutoTranslate:boolean) => void;
@@ -18,6 +19,7 @@ export type State = {
 const useSettingsStore = create<State>((set, get) => ({
   isAutoTranslate: false,
   languages: ['en'],
+	isSaving: false,
 
  	all: async (userId: string) => {
 		try {
@@ -58,6 +60,7 @@ const useSettingsStore = create<State>((set, get) => ({
 	},
 	addLanguage: async (userId: string, language:string) => {
 		try{
+			set((state:State) => ({ isSaving: true }));
 			const state = <State>get();
 			const body = {
 				...state,
@@ -66,12 +69,15 @@ const useSettingsStore = create<State>((set, get) => ({
 			}
 			const response = await axios.put(`${URL}/settings`, body);
 			set((state:State) => ({ languages: body.languages }));
+			set((state:State) => ({ isSaving: false }));
 		}catch(error:any){
+			set((state:State) => ({ isSaving: false }));
 			toast.error('Failed to update');
 		}
 	},
 	deleteLanguage: async (userId: string, language:string) => {
 		try{
+			set((state:State) => ({ isSaving: true }));
 			const state = <State>get();
 			const body = {
 				...state,
@@ -80,7 +86,9 @@ const useSettingsStore = create<State>((set, get) => ({
 			}
 			const response = await axios.put(`${URL}/settings`, body);
 			set((state:State) => ({ languages: body.languages }));
+			set((state:State) => ({ isSaving: false }));
 		}catch(error:any){
+			set((state:State) => ({ isSaving: false }));
 			toast.error('Failed to update');
 		}
 	}

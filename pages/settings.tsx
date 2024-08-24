@@ -2,11 +2,13 @@ import Head from 'next/head';
 import Header from 'components/header';
 import AutoTranslate from 'components/settings/autoTranslate';
 import Lenguage from 'components/settings/language';
+import SavingScreen from 'components/savingScreen';
+import useSettingsStore, { State as SettingsState } from 'store/settings';
 
 import styles from 'styles/pages/Settings.module.css';
 
 export default function Settings() {
-
+  const isSaving = useSettingsStore((state: SettingsState) => state.isSaving);
   return (
     <div className={styles.container}>
       <Head>
@@ -19,6 +21,7 @@ export default function Settings() {
         <AutoTranslate/>
         <Lenguage/>
       </main>
+      {isSaving && <SavingScreen/>}
     </div>
   )
 }
