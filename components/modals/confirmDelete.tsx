@@ -54,7 +54,7 @@ export default function ConfirmDelete({ isOpen, closeModal, confirmDelete }:Prop
         <div className={styles.header}/>
         <div className={styles.inner_content}>
           <div style={{marginBottom: 10}}><b>Do you realy want to delete this list?</b></div>
-          <span style={{marginBottom: 10}}>Type <b>"{deleteFrase}"</b> to confirm</span>
+          <span style={{marginBottom: 10}}>Type <b>&quot;{deleteFrase}&quot;</b> to confirm</span>
           <input className={styles.input} onChange={handleInputChange}/>
           <div style={{marginTop: 15, display: 'flex', justifyContent: 'space-between'}}>
             <MainButton type='button' onClick={confirmDelete} label='Confirm' disabled={isDisabledConfirm || isDeleting}/>
