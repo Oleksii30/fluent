@@ -17,12 +17,14 @@ export type State = {
   changeIsSaving: (ISaving:boolean) => void;
   isSaving: boolean;
   changeListStatus: (listData:IList) => void;
+  isDeleting: boolean;
 }
 
 const useStore = create<State>((set, get) => ({
  lists: [],
  currentList: null,
  isSaving: false,
+ isDeleting: false,
  all: async (userId: string) => {
   try {
     const response = await axios.get(`${URL}?userId=${userId}`);
@@ -72,10 +74,13 @@ const useStore = create<State>((set, get) => ({
  },
  delete: async (userId: string, listId: number) => {
   try{
+    set((state:State) => ({ isDeleting: true }));
     await axios.delete(`${URL}/?listId=${listId}&userId=${userId}`);
     const response = await axios.get(`${URL}?userId=${userId}`);
     set((state:State) => ({ lists: response.data }));
+    set((state:State) => ({ isDeleting: false }));
   }catch(error:any){
+    set((state:State) => ({ isDeleting: false }));
     toast.error(error.response.data);
   }
  },

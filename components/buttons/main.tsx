@@ -4,15 +4,35 @@ type Props = {
   label: string,
   disabled?: boolean,
   type?: 'submit' | 'button',
-  onClick?: () => void
+  onClick?: () => void,
+	styles?: any
 }
 
-export default function MainButton({ label, disabled=false, type='submit', onClick }:Props) {
+const submitButton = {
+	position : 'relative',
+	border: '2px solid black',
+	color: 'black',
+	borderRadius: 20,
+	width: 'fit-content',
+	padding: '10px 25px',
+	fontWeight: 700,
+	cursor: 'pointer',
+	background: '#ff5252',
+	fontSize: 14,
+}
+
+const submitButtonDisabled = {
+	background: 'lightgrey'
+}
+
+export default function MainButton({ label, disabled=false, type='submit', onClick, styles={} }:Props) {
+	const disabledStyles = disabled ? submitButtonDisabled : {};
 	return (
 		<button
 			onClick={type==='submit' ? ()=>{} : onClick}
-			className={disabled ? styles.submit_button_disabled : styles.submit_button}
-			type={type} disabled={disabled}
+			style={{...submitButton, ...styles, ...disabledStyles}}
+			type={type}
+			disabled={disabled}
 		>
 			{label}
 		</button>

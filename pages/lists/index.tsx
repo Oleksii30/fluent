@@ -6,6 +6,7 @@ import useStore, { URL, State } from 'store/lists';
 import { useAuthState } from 'context/auth'
 import { IList } from 'interfaces/list.interface';
 import Filter from 'components/filter';
+import ConfirmDelete from 'components/modals/confirmDelete';
 
 import styles from 'styles/pages/Lists.module.css';
 
@@ -16,10 +17,19 @@ export default function Home() {
   const { isLoggedIn, user } = useAuthState();
   const lists = useStore((state: any) => state.lists);
   const [filteredLists, setFilteredLists] = useState(lists);
+  const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
+  const [deleteListId, setDeleteListId] = useState<number | null>(null);
 
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1224px)' });
 
   const showFilters = lists.length > 0 && !isTabletOrMobile;
+
+  const closeDeleteModal = () => {
+    setDeleteModalIsOpen(false);
+  }
+  const openDeleteModal = () => {
+    setDeleteModalIsOpen(true);
+  }
 
   useEffect(() => {
     if(isLoggedIn){
@@ -27,8 +37,18 @@ export default function Home() {
     }
   }, [getLists, isLoggedIn, user])
 
-  const handleDeleteList = (listCreatedAt:number) => {
-    deleteList(user.username, listCreatedAt);
+  const handleOpenDeleteModal = (listCreatedAt:number) => {
+    openDeleteModal();
+    setDeleteListId(listCreatedAt);
+  }
+
+  const handleDeleteList = async () => {
+    if(!deleteListId){
+      return
+    }
+    await deleteList(user.username, deleteListId);
+    closeDeleteModal();
+    setDeleteListId(null);
   }
 
   const renderLists = () => {
@@ -39,19 +59,24 @@ export default function Home() {
     return(
       <div className={styles.lists_container}>
         {filteredLists.map((list:IList) =>
-          <ListCard key={list.createdAt} list={list} onDeleteList={handleDeleteList}/>
+          <ListCard key={list.createdAt} list={list} onDeleteList={handleOpenDeleteModal}/>
         )}
       </div>
     )
   }
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} id="main">
       <Header/>
       <main className={styles.main}>
         {showFilters && <Filter items={lists} setItems={setFilteredLists}/>}
         {renderLists()}
       </main>
+      <ConfirmDelete
+        isOpen={deleteModalIsOpen}
+        closeModal={closeDeleteModal}
+        confirmDelete={handleDeleteList}
+      />
     </div>
   )
 }
