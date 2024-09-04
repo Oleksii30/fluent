@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useMediaQuery } from 'react-responsive';
+import { GetServerSidePropsContext } from "next";
 import Header from 'components/header';
 import ListCard from 'components/listCard';
 import useStore, { URL, State } from 'store/lists';
@@ -7,8 +7,19 @@ import { useAuthState } from 'context/auth'
 import { IList } from 'interfaces/list.interface';
 import Filter from 'components/filter';
 import ConfirmDelete from 'components/modals/confirmDelete';
+import HumburgerButton from 'components/humburger';
+import { useIsServerSideMobile } from 'context/serverSideMobile';
+import { getIsSsrMobile } from 'helpers/serverSideMobile';
 
 import styles from 'styles/pages/Lists.module.css';
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  return {
+    props: {
+      isSsrMobile: getIsSsrMobile(context)
+    }
+  };
+}
 
 export default function Home() {
 
@@ -19,8 +30,13 @@ export default function Home() {
   const [filteredLists, setFilteredLists] = useState(lists);
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
   const [deleteListId, setDeleteListId] = useState<number | null>(null);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1224px)' });
+  const isTabletOrMobile = useIsServerSideMobile();
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(prevState => !prevState);
+  }
 
   const showFilters = lists.length > 0 && !isTabletOrMobile;
 
@@ -69,6 +85,19 @@ export default function Home() {
     <div className={styles.container} id="main">
       <Header/>
       <main className={styles.main}>
+        {isTabletOrMobile &&
+          <>
+            <div style={{padding: 20, display: 'flex', alignItems:'center', width: '100%'}}>
+              <HumburgerButton isOpen={isMobileMenuOpen} toggleMenu={toggleMobileMenu}/>
+              <h3 style={{marginLeft: 10}}>Filters</h3>
+            </div>
+            {isMobileMenuOpen &&
+              <div className={styles.filters_mobile_container}>
+                <Filter items={lists} setItems={setFilteredLists}/>
+              </div>
+            }
+          </>
+        }
         {showFilters && <Filter items={lists} setItems={setFilteredLists}/>}
         {renderLists()}
       </main>

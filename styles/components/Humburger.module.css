@@ -1,0 +1,31 @@
+.main_container {
+  height: 30px;
+  width: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+
+.line {
+  width: 100%;
+  height: 4px;
+  background-color: black;
+  border-radius: 20px;
+  transition: all .3s ease;
+}
+
+.top_open {
+  transform: rotate(45deg) translateY(19px);
+}
+
+.down_open {
+  transform: rotate(-45deg) translateY(-18px);
+}
+
+.middle_open {
+  display: none;
+}

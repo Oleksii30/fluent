@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useMediaQuery } from "react-responsive";
 import Name from "./name";
 import Language from "./language";
 import NotLearned from "./notLearned";
@@ -8,7 +9,7 @@ import styles from 'styles/components/Filter.module.css';
 
 type Props = {
   items: Array<IList>;
-	setItems: (firltered:Array<IList>) => void
+	setItems: (firltered:Array<IList>) => void;
 }
 
 const defaultFilter = {
@@ -19,6 +20,8 @@ const defaultFilter = {
 
 export default function Filter({ items, setItems }:Props) {
 	const [filter, setFilter] = useState(defaultFilter);
+
+	const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1224px)' });
 
 	const handleChangeName = (name:string) => {
 		setFilter(prevFilter => ({
@@ -60,7 +63,7 @@ export default function Filter({ items, setItems }:Props) {
 	}, [filter, items])
 
   return (
-		<div className={styles.main_container}>
+		<div className={isTabletOrMobile ? styles.main_container_mobile : styles.main_container}>
 			<h4 style={{marginRight:10}}>List Header</h4>
 			<Name onChangeName={handleChangeName}/>
 			<h4 style={{marginRight:10, marginLeft:20}}>Language</h4>
