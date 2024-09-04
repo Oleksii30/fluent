@@ -1,11 +1,11 @@
 import Link from 'next/link';
-import { useMediaQuery } from 'react-responsive';
 import { IList } from 'interfaces/list.interface';
 import { format } from "date-fns";
 import { DateFormats } from 'enums/dateFormats';
 import { Routes } from 'enums/routes';
 import { Check, XSquare } from 'react-feather';
 import IconButton from 'components/buttons/icon';
+import { useIsServerSideMobile } from 'context/serverSideMobile';
 
 import styles from 'styles/components/ListCard.module.css';
 
@@ -16,7 +16,8 @@ type Props = {
 }
 
 export default function ListCard({ list, onDeleteList }:Props) {
-  const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1224px)' });
+  const isTabletOrMobile = useIsServerSideMobile();
+
   return (
     <div style={{position:'relative', width: 'fit-content', height: 'fit-content'}}>
       <Link href={`${Routes.LISTS}/${list.createdAt}`}>

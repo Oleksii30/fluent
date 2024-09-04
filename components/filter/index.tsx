@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useMediaQuery } from "react-responsive";
+import { useIsServerSideMobile } from 'context/serverSideMobile';
 import Name from "./name";
 import Language from "./language";
 import NotLearned from "./notLearned";
@@ -21,7 +21,7 @@ const defaultFilter = {
 export default function Filter({ items, setItems }:Props) {
 	const [filter, setFilter] = useState(defaultFilter);
 
-	const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1224px)' });
+	const isTabletOrMobile = useIsServerSideMobile();
 
 	const handleChangeName = (name:string) => {
 		setFilter(prevFilter => ({
