@@ -48,6 +48,13 @@ export default function Home() {
   }
 
   useEffect(() => {
+    if(filteredLists.length > 0){
+      return
+    }
+    setFilteredLists(lists)
+  }, [lists])
+
+  useEffect(() => {
     if(isLoggedIn){
       getLists(user.username);
     }
