@@ -4,6 +4,7 @@ import Name from "./name";
 import Language from "./language";
 import NotLearned from "./notLearned";
 import { IList } from 'interfaces/list.interface';
+import useFilter, { changeName, changeLang, changeShowNotLearned } from "context/filter";
 
 import styles from 'styles/components/Filter.module.css';
 
@@ -12,36 +13,21 @@ type Props = {
 	setItems: (firltered:Array<IList>) => void;
 }
 
-const defaultFilter = {
-	name: '',
-	lang: '',
-	showNotLearned: false
-}
-
 export default function Filter({ items, setItems }:Props) {
-	const [filter, setFilter] = useState(defaultFilter);
+	const [filter, filterDispatch] = useFilter();
 
 	const isTabletOrMobile = useIsServerSideMobile();
 
 	const handleChangeName = (name:string) => {
-		setFilter(prevFilter => ({
-			...prevFilter,
-			name: name
-		}))
+		changeName(filterDispatch, name)
 	}
 
 	const handleChangeLanguge = (lang:string) => {
-		setFilter(prevFilter => ({
-			...prevFilter,
-			lang: lang
-		}))
+		changeLang(filterDispatch, lang)
 	}
 
 	const handleChangeNotLearned = (showNotLearned: boolean) => {
-		setFilter(prevFilter => ({
-			...prevFilter,
-			showNotLearned: showNotLearned
-		}))
+		changeShowNotLearned(filterDispatch, showNotLearned)
 	}
 
 	useEffect(() => {
@@ -65,9 +51,9 @@ export default function Filter({ items, setItems }:Props) {
   return (
 		<div className={isTabletOrMobile ? styles.main_container_mobile : styles.main_container}>
 			<h4 style={{marginRight:10}}>List Header</h4>
-			<Name onChangeName={handleChangeName}/>
+			<Name onChangeName={handleChangeName} name={filter.name}/>
 			<h4 style={{marginRight:10, marginLeft:20}}>Language</h4>
-			<Language onChangeLanguage={handleChangeLanguge}/>
+			<Language onChangeLanguage={handleChangeLanguge} lang={filter.lang}/>
 			<h4 style={{marginRight:10, marginLeft:20}}>Not Learned</h4>
 			<NotLearned onChangeNotLearned={handleChangeNotLearned} isChecked={filter.showNotLearned}/>
 		</div>

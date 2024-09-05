@@ -4,12 +4,15 @@ import { options } from "components/settings/languageOptions";
 import { calculateLanguageOptions } from 'helpers/language';
 
 type Props = {
-	onChangeLanguage: (value:string) => void
+	lang: string;
+	onChangeLanguage: (value:string) => void;
 }
 
-export default function Language({ onChangeLanguage }:Props) {
+export default function Language({ onChangeLanguage, lang }:Props) {
 
   const languages = useSettingsStore((state: SettingsState) => state.languages);
+
+	const selectedLang = options.find(item => item.value === lang);
 
 	const handleChange = (option:any) => {
 		onChangeLanguage(option.value)
@@ -17,7 +20,7 @@ export default function Language({ onChangeLanguage }:Props) {
 
 	return (
     <div style={{width: 200}}>
-			<Select options={calculateLanguageOptions(languages, options)} onChange={handleChange} instanceId="language-filter"/>
+			<Select options={calculateLanguageOptions(languages, options)} onChange={handleChange} instanceId="language-filter" value={selectedLang}/>
 		</div>
 	)
 }
