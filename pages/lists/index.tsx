@@ -16,7 +16,7 @@ import styles from 'styles/pages/Lists.module.css';
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   return {
     props: {
-      isSsrMobile: true//getIsSsrMobile(context)
+      isSsrMobile: getIsSsrMobile(context)
     }
   };
 }
