@@ -9,4 +9,28 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding: 20px;
+}
+
+.section {
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.big_text {
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.big_text_red {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--light_red);
+}
+
+.semi_big_text {
+  font-size: 26px;
+  font-weight: 600;
 }

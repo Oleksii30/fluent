@@ -8,9 +8,9 @@ import { Routes } from 'enums/routes';
 import styles from 'styles/components/Header.module.css';
 
 export default function Header() {
-	const router = useRouter()
-	const { isLoggedIn, user } = useAuthState()
-	const authDispatch = useAuthDispatch()
+	const router = useRouter();
+	const { isLoggedIn, user } = useAuthState();
+	const authDispatch = useAuthDispatch();
 
 	const nullCurrentList = useStore((state: State) => state.nullCurrentList);
 
