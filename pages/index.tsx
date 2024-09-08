@@ -47,7 +47,7 @@ export default function Home() {
             width={isTabletOrMobile ? 350 : 502}
             height={isTabletOrMobile ? 269 : 381}
           />
-          <div style={{width: isTabletOrMobile ? '100%': '60%', textAlign:'center'}}>
+          <div style={{width: isTabletOrMobile ? '100%': '50%', textAlign:'center'}}>
             <span className={isTabletOrMobile ? styles.big_text_mobile : styles.big_text}>
               Fluently is your helper in
               learning languages
