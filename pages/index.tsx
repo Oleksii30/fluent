@@ -49,7 +49,7 @@ export default function Home() {
           />
           <div style={{width: isTabletOrMobile ? '100%': '50%', textAlign:'center'}}>
             <span className={isTabletOrMobile ? styles.big_text_mobile : styles.big_text}>
-              Fluently is your helper in
+              <span style={{color: '#ff5252'}}>Fluently</span> is your helper in
               learning languages
             </span>
             <div style={{marginTop: 20}}>
@@ -89,7 +89,7 @@ export default function Home() {
             width={isTabletOrMobile ? 350 : 489}
             height={isTabletOrMobile ? 236 : 331}
           />
-          <div style={{width: isTabletOrMobile ? '100%': '45%', textAlign:'center', paddingTop:20}}>
+          <div style={{width: isTabletOrMobile ? '100%': '45%', textAlign:'center', paddingTop: isTabletOrMobile ? 0 : 20}}>
             <span className={isTabletOrMobile ? styles.semi_big_text_mobile : styles.semi_big_text}>
               Reading a book and
               encountered a word that
