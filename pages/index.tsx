@@ -27,7 +27,7 @@ export default function Home() {
   const isTabletOrMobile = useIsServerSideMobile();
 
   const handleCickAction = () => {
-    const route = isLoggedIn ? Routes.SIGNUP : Routes.CREATE;
+    const route = isLoggedIn ? Routes.CREATE : Routes.SIGNUP;
     router.replace(route);
   }
 

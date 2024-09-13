@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { GetServerSidePropsContext } from "next";
+import Image from 'next/image';
 import Header from 'components/header';
 import ListCard from 'components/listCard';
 import useStore, { URL, State } from 'store/lists';
@@ -76,7 +77,17 @@ export default function Home() {
 
   const renderLists = () => {
     if(lists.length === 0){
-      return <div>No lists were created yet</div>
+      return (
+        <div style={{display:'flex', flexDirection: 'column', alignItems:'center'}}>
+          <Image
+            style={{borderRadius: 50}}
+            src='/images/no_lists.jpg' alt='no lists'
+            width={300}
+            height={200}
+          />
+          <h4>No lists were created yet</h4>
+        </div>
+      )
     }
 
     return(
