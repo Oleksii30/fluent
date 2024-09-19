@@ -1,11 +1,21 @@
 import Head from 'next/head';
+import { GetServerSidePropsContext } from "next";
 import Header from 'components/header';
 import AutoTranslate from 'components/settings/autoTranslate';
 import Lenguage from 'components/settings/language';
 import SavingScreen from 'components/savingScreen';
 import useSettingsStore, { State as SettingsState } from 'store/settings';
+import { getIsSsrMobile } from 'helpers/serverSideMobile';
 
 import styles from 'styles/pages/Settings.module.css';
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  return {
+    props: {
+      isSsrMobile: getIsSsrMobile(context)
+    }
+  };
+}
 
 export default function Settings() {
   const isSaving = useSettingsStore((state: SettingsState) => state.isSaving);

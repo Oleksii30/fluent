@@ -159,6 +159,9 @@ export default function Learn() {
                 {isListLearned && <div style={{marginLeft: 10, paddingTop: 10}}><Check color='green'/></div>}
               </div>
               <MainButton type='button' label='Check' onClick={handleCheck}/>
+              <div style={{padding: '20px 0px', width: 400}}>
+                In this game simply drag variants to appropriate boxes. Check your result when finished.
+              </div>
               <Droppable droppableId={VARIANTS_CONTAINER} direction='horizontal'>
                 {(provided, snapshot) => (
                   <div className={styles.list_variants_container} ref={provided.innerRef} {...provided.droppableProps}>
