@@ -33,7 +33,7 @@ export default function Language() {
 	return (
 		<div style={{display: 'flex', flexDirection: 'column'}}>
 			<h4 style={{marginLeft: 20}}>Languages</h4>
-			<div style={{paddingLeft: 20, width: isTabletOrMobile ? 400 : 600}}>
+			<div style={{paddingLeft: 20, width: isTabletOrMobile ? 350 : 600}}>
 				Here you can set languages which you are learning. Basically they are used for filtering on Lists page.
 			</div>
 			<div className={styles.language_container}>

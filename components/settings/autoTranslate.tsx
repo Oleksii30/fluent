@@ -22,7 +22,7 @@ export default function AutoTranslate() {
 				<h4 style={{marginRight: 20}}>Auto translation</h4>
 				<Switch onChange={handleChange} checked={isAutoTranslate} onColor='#ff5252'/>
 			</div>
-			<div style={{paddingLeft: 20, width: isTabletOrMobile ? 400 : 600}}>
+			<div style={{paddingLeft: 20, width: isTabletOrMobile ? 350 : 600}}>
 				Auto translation allows you to automatically translate a word when adding it to your list.
 				It`s very helpful because you don`t have to use external apps for translation, but it takes few seconds to save a word when it`s on.
 			</div>
