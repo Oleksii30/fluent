@@ -11,6 +11,16 @@ import SavingScreen from 'components/savingScreen';
 
 import styles from 'styles/pages/Lists.module.css';
 
+import { getIsSsrMobile } from 'helpers/serverSideMobile';
+import { GetServerSidePropsContext } from "next";
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  return {
+    props: {
+      isSsrMobile: getIsSsrMobile(context)
+    }
+  };
+}
+
 export default function List() {
   const router = useRouter();
   const { id } = router.query;

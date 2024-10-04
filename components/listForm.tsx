@@ -13,6 +13,7 @@ import useSettingsStore, { State as SettingsState } from 'store/settings';
 import { options as languagesArray } from './settings/languageOptions';
 import { calculateLanguageOptions } from 'helpers/language';
 import { getAudioUrl } from 'api/audio';
+import { useIsServerSideMobile } from 'context/serverSideMobile';
 
 import styles from 'styles/components/ListForm.module.css';
 
@@ -29,6 +30,8 @@ export default function ListForm({ item }:Props) {
       list: item ? item.list : []
     }
   });
+
+  const isTabletOrMobile = useIsServerSideMobile();
 
   useEffect(() => {
     if(!item){
@@ -152,7 +155,7 @@ export default function ListForm({ item }:Props) {
           {(fields as Array<WordInput>).map((field, index) => (
               <div key={field.id} className={styles.word_field_container}>
                 <div className={styles.vertical_container}>
-                  <div className={styles.input_container}>
+                  <div className={styles.input_container} style={{width:isTabletOrMobile ? 350 : 500}}>
                      <EditableInput
                       register={register}
                       fieldName={`list.${index}.word`}

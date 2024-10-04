@@ -30,7 +30,6 @@
   display: flex;
   flex-wrap: wrap;
   padding: 10px;
-  width: 350px;
 }
 
 .word_input {
