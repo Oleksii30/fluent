@@ -5,8 +5,8 @@ codeuri = "C:\\Users\\Oleksii\\fluent\\sam\\fluent_aws"
 runtime = "nodejs20.x"
 architecture = "x86_64"
 handler = "src/handlers/get-all-lists.handler"
-manifest_hash = "50153f7b8de9a5ef9b73e5bbec6dda02"
+manifest_hash = "4bcd5220339cc037b6c0f0145a22567f"
 packagetype = "Zip"
-functions = ["getAllListsFunction", "getListByIdFunction", "deleteListFunction", "createNewListFunction", "updateListFunction", "translateFunction", "createSettingsFunction", "updateSettingsFunction", "getSettingsFunction"]
+functions = ["getAllListsFunction", "getListByIdFunction", "deleteListFunction", "createNewListFunction", "updateListFunction", "translateFunction", "getAudioFunction", "createSettingsFunction", "updateSettingsFunction", "getSettingsFunction"]
 
 [layer_build_definitions]

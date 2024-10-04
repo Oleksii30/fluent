@@ -10,7 +10,8 @@
         "@middy/http-cors": "^5.3.5",
         "@middy/http-error-handler": "^5.3.5",
         "@vitalets/google-translate-api": "^9.2.0",
-        "http-errors": "^2.0.0"
+        "http-errors": "^2.0.0",
+        "redis": "^4.7.0"
     },
     "devDependencies": {
         "aws-sdk-client-mock": "^2.0.0",

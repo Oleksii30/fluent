@@ -1,8 +1,9 @@
 import { useEffect } from 'react';
+import { Howl } from 'howler';
 import EditableInput, { FieldTypes } from './editableInput';
 import IconButton from 'components/buttons/icon';
 import { useForm, useFieldArray } from "react-hook-form";
-import { PlusCircle, X, ArrowRightCircle } from 'react-feather';
+import { PlusCircle, X, ArrowRightCircle, Volume2 } from 'react-feather';
 import useStore, { State } from 'store/lists';
 import { WordInput, IList } from 'interfaces/list.interface';
 import { useAuthState } from 'context/auth';
@@ -11,6 +12,7 @@ import { DateFormats } from 'enums/dateFormats';
 import useSettingsStore, { State as SettingsState } from 'store/settings';
 import { options as languagesArray } from './settings/languageOptions';
 import { calculateLanguageOptions } from 'helpers/language';
+import { getAudioUrl } from 'api/audio';
 
 import styles from 'styles/components/ListForm.module.css';
 
@@ -107,6 +109,25 @@ export default function ListForm({ item }:Props) {
     submitForm(data);
   }
 
+  const createHowlInstance = (audioSrc:string) => {
+
+    const sound = new Howl({
+      src: audioSrc,
+      html5: true
+    });
+
+    return sound
+  }
+
+  const handleAudio = async (index:number) => {
+    const values = getValues();
+    const word = values.list[index].word;
+
+    const result = await getAudioUrl(word);
+    const sound = createHowlInstance(result);
+    sound.play();
+  }
+
   return (
       <main className={styles.main}>
         <form onSubmit={handleSubmit((data) => submitForm(data))}>
@@ -144,6 +165,11 @@ export default function ListForm({ item }:Props) {
                       revertFieldValue={revertFieldValue}
                       placeholder='new word'
                     />
+                    <div style={{marginLeft:30}}>
+                      <IconButton size={30} onClick={() => handleAudio(index)}>
+                        <Volume2 size={30}/>
+                      </IconButton>
+                    </div>
                   </div>
                   <div className={styles.horizontal_container}>
                     <span className={styles.additional_label}>Translations:</span>

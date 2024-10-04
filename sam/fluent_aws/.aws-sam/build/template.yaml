@@ -151,6 +151,33 @@ Resources:
       CodeUri: translateFunction
     Metadata:
       SamResourceId: translateFunction
+  getAudioFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/polly.handler
+      Runtime: nodejs20.x
+      Architectures:
+      - x86_64
+      MemorySize: 128
+      Timeout: 100
+      Policies:
+      - S3FullAccessPolicy:
+          BucketName:
+            Ref: polly
+      - AmazonPollyFullAccess
+      Environment:
+        Variables:
+          POLLY_BUCKET:
+            Ref: polly
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /polly
+            Method: GET
+      CodeUri: getAudioFunction
+    Metadata:
+      SamResourceId: getAudioFunction
   createSettingsFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -257,6 +284,14 @@ Resources:
       ProvisionedThroughput:
         ReadCapacityUnits: 2
         WriteCapacityUnits: 2
+  polly:
+    Type: AWS::S3::Bucket
+    Properties:
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: false
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: false
 Outputs:
   WebEndpoint:
     Description: API Gateway endpoint URL for Prod stage
