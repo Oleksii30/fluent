@@ -166,7 +166,7 @@ export default function ListForm({ item, isTabletOrMobile }:Props) {
                       revertFieldValue={revertFieldValue}
                       placeholder='new word'
                     />
-                    <div style={{marginLeft:30}}>
+                    <div style={{marginLeft:isTabletOrMobile ? 0 : 30}}>
                       <IconButton size={30} onClick={() => handleAudio(index)}>
                         <Volume2 size={30}/>
                       </IconButton>
