@@ -154,19 +154,21 @@ export default function ListForm({ item, isTabletOrMobile }:Props) {
               <div key={field.id} className={styles.word_field_container}>
                 <div className={styles.vertical_container}>
                   <div className={styles.input_container} style={{width:isTabletOrMobile ? 350 : 500}}>
-                     <EditableInput
-                      register={register}
-                      fieldName={`list.${index}.word`}
-                      setFocus={setFocus}
-                      submitForm={submitForm}
-                      getValues={getValues}
-                      onRemove={()=>handleRemoveField(index)}
-                      index={index}
-                      type={FieldTypes.WORD}
-                      revertFieldValue={revertFieldValue}
-                      placeholder='new word'
-                    />
-                    <div style={{marginLeft:isTabletOrMobile ? 0 : 30}}>
+                    <div style={{marginRight:30}}>
+                      <EditableInput
+                        register={register}
+                        fieldName={`list.${index}.word`}
+                        setFocus={setFocus}
+                        submitForm={submitForm}
+                        getValues={getValues}
+                        onRemove={()=>handleRemoveField(index)}
+                        index={index}
+                        type={FieldTypes.WORD}
+                        revertFieldValue={revertFieldValue}
+                        placeholder='new word'
+                      />
+                    </div>
+                    <div>
                       <IconButton size={30} onClick={() => handleAudio(index)}>
                         <Volume2 size={30}/>
                       </IconButton>
