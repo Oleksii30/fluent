@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Howl } from 'howler';
 import EditableInput, { FieldTypes } from './editableInput';
 import IconButton from 'components/buttons/icon';
@@ -10,9 +10,10 @@ import { useAuthState } from 'context/auth';
 import { format } from "date-fns";
 import { DateFormats } from 'enums/dateFormats';
 import useSettingsStore, { State as SettingsState } from 'store/settings';
-import { options as languagesArray } from './settings/languageOptions';
+import { options as languagesArray } from '../constants/languageOptions';
 import { calculateLanguageOptions } from 'helpers/language';
 import { getAudioUrl } from 'api/audio';
+import { pollyOptions } from 'constants/pollyOptions';
 
 import styles from 'styles/components/ListForm.module.css';
 
@@ -30,6 +31,13 @@ export default function ListForm({ item, isTabletOrMobile }:Props) {
       list: item ? item.list : []
     }
   });
+
+  const calculateShowAudio = (lang:string) => {
+    return Boolean((pollyOptions as any)[lang])
+  }
+
+  const showAudioDefault = calculateShowAudio(getValues().language);
+  const [showAudio, setShowAudio] = useState(showAudioDefault);
 
   useEffect(() => {
     if(!item){
@@ -107,6 +115,7 @@ export default function ListForm({ item, isTabletOrMobile }:Props) {
       language: event.target.value
     }
 
+    setShowAudio(calculateShowAudio(event.target.value));
     submitForm(data);
   }
 
@@ -124,7 +133,14 @@ export default function ListForm({ item, isTabletOrMobile }:Props) {
     const values = getValues();
     const word = values.list[index].word;
 
-    const result = await getAudioUrl(word);
+    const pollyOption = (pollyOptions as any)[values.language];
+    const code = pollyOption?.code || '';
+    const voiceId = pollyOption?.voiceId || '';
+
+    const result = await getAudioUrl(word, code, voiceId);
+    if(!result){
+      return
+    }
     const sound = createHowlInstance(result);
     sound.play();
   }
@@ -168,11 +184,13 @@ export default function ListForm({ item, isTabletOrMobile }:Props) {
                         placeholder='new word'
                       />
                     </div>
-                    <div>
-                      <IconButton size={30} onClick={() => handleAudio(index)}>
-                        <Volume2 size={30}/>
-                      </IconButton>
-                    </div>
+                    {showAudio &&
+                      <div>
+                        <IconButton size={30} onClick={() => handleAudio(index)}>
+                          <Volume2 size={30}/>
+                        </IconButton>
+                      </div>
+                    }
                   </div>
                   <div className={styles.horizontal_container}>
                     <span className={styles.additional_label}>Translations:</span>

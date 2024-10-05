@@ -3,7 +3,6 @@ import cors from '@middy/http-cors';
 import httpErrorHandler from '@middy/http-error-handler';
 import createError from 'http-errors';
 import { StartSpeechSynthesisTaskCommand, PollyClient } from "@aws-sdk/client-polly";
-import { S3Client, GetObjectCommand } from '@aws-sdk/client-s3';
 import { createClient } from 'redis';
 
 function delay(time) {
@@ -23,7 +22,7 @@ const redisClient = createClient({
 const bucket = process.env.POLLY_BUCKET;
 
 const lambdaHandler = async (event) => {
-  const word = event.queryStringParameters.word;
+  const { word, code, voiceId } = event.queryStringParameters;
 
   await redisClient.connect();
   const url = await redisClient.get(word);
@@ -38,14 +37,22 @@ const lambdaHandler = async (event) => {
 
   const params = {
     OutputFormat: "mp3",
+    LanguageCode: code,
     OutputS3BucketName: bucket,
     Text: word,
     TextType: "text",
-    VoiceId: "Joanna",
+    VoiceId: voiceId,
     SampleRate: "22050",
   };
 
-  const result = await pollyClient.send(new StartSpeechSynthesisTaskCommand(params));
+  let result;
+
+  try{
+    result = await pollyClient.send(new StartSpeechSynthesisTaskCommand(params));
+  }catch(error){
+    await redisClient.disconnect();
+    throw new createError(401, error.message);
+  }
 
   const {OutputUri, TaskStatus} = result.SynthesisTask;
 

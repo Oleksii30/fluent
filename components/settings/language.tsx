@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useAuthState } from 'context/auth';
 import useSettingsStore, { State as SettingsState } from 'store/settings';
 import Select from 'react-select';
-import { options } from "./languageOptions";
+import { options } from "../../constants/languageOptions";
 import IconButton from 'components/buttons/icon';
 import { Plus } from 'react-feather';
 import { calculateLanguageOptions } from 'helpers/language';

@@ -1,6 +1,6 @@
 import useSettingsStore, { State as SettingsState } from 'store/settings';
 import Select from 'react-select';
-import { options } from "components/settings/languageOptions";
+import { options } from "constants/languageOptions";
 import { calculateLanguageOptions } from 'helpers/language';
 
 type Props = {
