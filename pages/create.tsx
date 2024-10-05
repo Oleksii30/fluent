@@ -3,13 +3,26 @@ import Header from 'components/header';
 import ListForm from 'components/listForm';
 import useStore, { State }  from 'store/lists';
 import SavingScreen from 'components/savingScreen';
+import { useIsServerSideMobile } from 'context/serverSideMobile';
+import { getIsSsrMobile } from 'helpers/serverSideMobile';
+import { GetServerSidePropsContext } from "next";
 
 import styles from 'styles/pages/Create.module.css';
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  return {
+    props: {
+      isSsrMobile: getIsSsrMobile(context)
+    }
+  };
+}
 
 export default function Create() {
 
   const currentList = useStore((state: State) => state.currentList);
   const isSaving = useStore((state: State) => state.isSaving);
+
+  const isTabletOrMobile = useIsServerSideMobile();
 
   return (
     <div className={styles.container}>
@@ -23,7 +36,7 @@ export default function Create() {
         <h1 className={styles.title}>
           Create List
         </h1>
-        <ListForm item={currentList}/>
+        <ListForm item={currentList} isTabletOrMobile={isTabletOrMobile}/>
       </main>
       {isSaving && <SavingScreen/>}
     </div>

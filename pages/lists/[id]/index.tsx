@@ -8,11 +8,12 @@ import Link from 'next/link';
 import { Routes } from 'enums/routes';
 import MainButton from 'components/buttons/main';
 import SavingScreen from 'components/savingScreen';
+import { getIsSsrMobile } from 'helpers/serverSideMobile';
+import { GetServerSidePropsContext } from "next";
+import { useIsServerSideMobile } from 'context/serverSideMobile';
 
 import styles from 'styles/pages/Lists.module.css';
 
-import { getIsSsrMobile } from 'helpers/serverSideMobile';
-import { GetServerSidePropsContext } from "next";
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   return {
     props: {
@@ -24,7 +25,9 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 export default function List() {
   const router = useRouter();
   const { id } = router.query;
-  const { user } = useAuthState()
+  const { user } = useAuthState();
+
+  const isTabletOrMobile = useIsServerSideMobile();
 
   const getListById = useStore((state: State) => state.getById);
   const currentList = useStore((state: State) => state.currentList);
@@ -45,7 +48,7 @@ export default function List() {
           <MainButton label='Learn this list' type='button'/>
         </Link>
       </div>
-      {currentList && <ListForm item={currentList}/>}
+      {currentList && <ListForm item={currentList} isTabletOrMobile={isTabletOrMobile}/>}
       {isSaving && <SavingScreen/>}
     </div>
   )

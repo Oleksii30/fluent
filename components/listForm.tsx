@@ -13,15 +13,15 @@ import useSettingsStore, { State as SettingsState } from 'store/settings';
 import { options as languagesArray } from './settings/languageOptions';
 import { calculateLanguageOptions } from 'helpers/language';
 import { getAudioUrl } from 'api/audio';
-import { useIsServerSideMobile } from 'context/serverSideMobile';
 
 import styles from 'styles/components/ListForm.module.css';
 
 type Props = {
-  item: IList | null,
+  item: IList | null;
+  isTabletOrMobile: boolean;
 }
 
-export default function ListForm({ item }:Props) {
+export default function ListForm({ item, isTabletOrMobile }:Props) {
   const languages = useSettingsStore((state: SettingsState) => state.languages);
   const { control, register, handleSubmit, setFocus, getValues, setValue } = useForm({
     defaultValues:{
@@ -30,8 +30,6 @@ export default function ListForm({ item }:Props) {
       list: item ? item.list : []
     }
   });
-
-  const isTabletOrMobile = useIsServerSideMobile();
 
   useEffect(() => {
     if(!item){
