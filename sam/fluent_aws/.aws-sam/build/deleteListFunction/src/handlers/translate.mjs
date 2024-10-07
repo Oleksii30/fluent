@@ -7,8 +7,9 @@ import createError from 'http-errors';
 const lambdaHandler = async (event) => {
 
   const word = event.queryStringParameters.word;
+  const to = event.queryStringParameters.to;
 
-  const { text } = await translate(word, { to: 'uk' });
+  const { text } = await translate(word, { to: to });
 
   if(!text){
     throw new createError(404, 'Failed to translate the word');

@@ -45,6 +45,7 @@ export default function EditableInput({
   const [fieldWidth, setFieldWidth] = useState(calculateFieldWidth(initValue || placeholder));
 
   const isAutoTranslate = useSettingsStore((state: SettingsState) => state.isAutoTranslate);
+  const languageToTranslate = useSettingsStore((state: SettingsState) => state.languageToTranslate);
   const changeIsSaving = useStore((state: State) => state.changeIsSaving);
 
   const toggleEditMode = () => {
@@ -67,7 +68,7 @@ export default function EditableInput({
 
   async function pushTranslationToValues(values: IList){
     const value = getInitialValue();
-    const translation = await getTranslation(value);
+    const translation = await getTranslation(value, languageToTranslate);
     const list = values.list.map((item:WordInput) => {
       if(item.word === value && item.translations.length === 0){
         item.translations = [translation]

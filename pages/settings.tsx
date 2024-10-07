@@ -6,6 +6,7 @@ import Lenguage from 'components/settings/language';
 import SavingScreen from 'components/savingScreen';
 import useSettingsStore, { State as SettingsState } from 'store/settings';
 import { getIsSsrMobile } from 'helpers/serverSideMobile';
+import TranslateTo from 'components/settings/translateTo';
 
 import styles from 'styles/pages/Settings.module.css';
 
@@ -28,6 +29,7 @@ export default function Settings() {
       </Head>
       <Header/>
       <main className={styles.main}>
+        <TranslateTo/>
         <AutoTranslate/>
         <Lenguage/>
       </main>

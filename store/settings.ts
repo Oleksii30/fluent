@@ -9,17 +9,20 @@ export type State = {
   isAutoTranslate: boolean;
   languages:Array<string>;
 	isSaving: boolean;
+	languageToTranslate: string;
   all: (userId: string) => void;
   create: (settingsData: ISettings) => void;
   updateAutoTranslate: (userId: string, isAutoTranslate:boolean) => void;
   addLanguage: (userId: string, language:string) => void;
   deleteLanguage: (userId: string, language:string) => void;
+	changeTranslateTo: (userId: string, language:string) => void;
 }
 
 const useSettingsStore = create<State>((set, get) => ({
   isAutoTranslate: false,
   languages: ['en'],
 	isSaving: false,
+	languageToTranslate: 'uk',
 
  	all: async (userId: string) => {
 		try {
@@ -28,10 +31,11 @@ const useSettingsStore = create<State>((set, get) => ({
 				return
 			}
 
-			const { isAutoTranslate, languages } = response.data[0];
+			const { isAutoTranslate, languages, languageToTranslate } = response.data[0];
 			set((state:State) => ({
 				isAutoTranslate: isAutoTranslate,
-				languages: languages
+				languages: languages,
+				languageToTranslate: languageToTranslate,
 			}));
 		}catch(error:any){
 			toast.error(error.response.data);
@@ -91,7 +95,24 @@ const useSettingsStore = create<State>((set, get) => ({
 			set((state:State) => ({ isSaving: false }));
 			toast.error('Failed to update');
 		}
-	}
+	},
+	changeTranslateTo: async (userId: string, language:string) => {
+		try{
+			set((state:State) => ({ isSaving: true }));
+			const state = <State>get();
+			const body = {
+				...state,
+				languageToTranslate: language,
+				userId: userId
+			}
+			const response = await axios.put(`${URL}/settings`, body);
+			set((state:State) => ({ languageToTranslate: language }));
+			set((state:State) => ({ isSaving: false }));
+		}catch(error:any){
+			set((state:State) => ({ isSaving: false }));
+			toast.error('Failed to update');
+		}
+	},
 }));
 export default useSettingsStore;
 
