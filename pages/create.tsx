@@ -6,6 +6,7 @@ import SavingScreen from 'components/savingScreen';
 import { useIsServerSideMobile } from 'context/serverSideMobile';
 import { getIsSsrMobile } from 'helpers/serverSideMobile';
 import { GetServerSidePropsContext } from "next";
+import { withAuth } from 'components/withAuth';
 
 import styles from 'styles/pages/Create.module.css';
 
@@ -17,7 +18,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   };
 }
 
-export default function Create() {
+function Create() {
 
   const currentList = useStore((state: State) => state.currentList);
   const isSaving = useStore((state: State) => state.isSaving);
@@ -42,3 +43,5 @@ export default function Create() {
     </div>
   )
 }
+
+export default withAuth(Create);

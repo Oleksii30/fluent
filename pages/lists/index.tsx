@@ -11,6 +11,7 @@ import ConfirmDelete from 'components/modals/confirmDelete';
 import HumburgerButton from 'components/humburger';
 import { useIsServerSideMobile } from 'context/serverSideMobile';
 import { getIsSsrMobile } from 'helpers/serverSideMobile';
+import { withAuth } from 'components/withAuth';
 
 import styles from 'styles/pages/Lists.module.css';
 
@@ -22,7 +23,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   };
 }
 
-export default function Home() {
+function Home() {
 
   const getLists = useStore((state: State) => state.all);
   const deleteList = useStore((state: State) => state.delete);
@@ -127,3 +128,5 @@ export default function Home() {
     </div>
   )
 }
+
+export default withAuth(Home);

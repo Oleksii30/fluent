@@ -7,6 +7,7 @@ import SavingScreen from 'components/savingScreen';
 import useSettingsStore, { State as SettingsState } from 'store/settings';
 import { getIsSsrMobile } from 'helpers/serverSideMobile';
 import TranslateTo from 'components/settings/translateTo';
+import { withAuth } from 'components/withAuth';
 
 import styles from 'styles/pages/Settings.module.css';
 
@@ -18,7 +19,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   };
 }
 
-export default function Settings() {
+function Settings() {
   const isSaving = useSettingsStore((state: SettingsState) => state.isSaving);
   return (
     <div className={styles.container}>
@@ -37,3 +38,5 @@ export default function Settings() {
     </div>
   )
 }
+
+export default withAuth(Settings);
