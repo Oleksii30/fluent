@@ -3,7 +3,7 @@ import { Howl } from 'howler';
 import EditableInput, { FieldTypes } from './editableInput';
 import IconButton from 'components/buttons/icon';
 import { useForm, useFieldArray } from "react-hook-form";
-import { PlusCircle, X, ArrowRightCircle, Volume2 } from 'react-feather';
+import { PlusCircle, X, ArrowRightCircle, Volume2, Circle } from 'react-feather';
 import useStore, { State } from 'store/lists';
 import { WordInput, IList } from 'interfaces/list.interface';
 import { useAuthState } from 'context/auth';
@@ -14,6 +14,8 @@ import { options as languagesArray } from '../constants/languageOptions';
 import { calculateLanguageOptions } from 'helpers/language';
 import { getAudioUrl } from 'api/audio';
 import { pollyOptions } from 'constants/pollyOptions';
+import { getTranslation } from 'api/translate';
+import Image from 'next/image';
 
 import styles from 'styles/components/ListForm.module.css';
 
@@ -24,6 +26,8 @@ type Props = {
 
 export default function ListForm({ item, isTabletOrMobile }:Props) {
   const languages = useSettingsStore((state: SettingsState) => state.languages);
+  const languageToTranslate = useSettingsStore((state: SettingsState) => state.languageToTranslate);
+  const changeIsSaving = useStore((state: State) => state.changeIsSaving);
   const { control, register, handleSubmit, setFocus, getValues, setValue } = useForm({
     defaultValues:{
       header: item ? item.header : '',
@@ -120,7 +124,6 @@ export default function ListForm({ item, isTabletOrMobile }:Props) {
   }
 
   const createHowlInstance = (audioSrc:string) => {
-
     const sound = new Howl({
       src: audioSrc,
       html5: true
@@ -143,6 +146,18 @@ export default function ListForm({ item, isTabletOrMobile }:Props) {
     }
     const sound = createHowlInstance(result);
     sound.play();
+  }
+
+  const handleTranslate = async (index:number) => {
+    const values = getValues();
+    const word = values.list[index].word;
+    changeIsSaving(true);
+    const translation = await getTranslation(word, languageToTranslate);
+    values.list[index].translations = [
+      ...values.list[index].translations,
+      translation
+    ]
+    submitForm(values);
   }
 
   return (
@@ -191,6 +206,13 @@ export default function ListForm({ item, isTabletOrMobile }:Props) {
                         </IconButton>
                       </div>
                     }
+                    <IconButton size={30} onClick={() => handleTranslate(index)}>
+                      <Image
+                        src='/images/translation.png' alt='translation'
+                        width={30}
+                        height={30}
+                      />
+                    </IconButton>
                   </div>
                   <div className={styles.horizontal_container}>
                     <span className={styles.additional_label}>Translations:</span>
