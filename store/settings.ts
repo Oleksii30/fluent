@@ -38,7 +38,7 @@ const useSettingsStore = create<State>((set, get) => ({
 				languageToTranslate: languageToTranslate,
 			}));
 		}catch(error:any){
-			toast.error(error.response.data);
+			toast.error(error.response?.data);
 		}
 	},
 	create: async (settingsData: ISettings) => {
