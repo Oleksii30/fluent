@@ -27,6 +27,7 @@ function Home() {
 
   const getLists = useStore((state: State) => state.all);
   const deleteList = useStore((state: State) => state.delete);
+  const nullCurrentList = useStore((state: State) => state.nullCurrentList);
   const { isLoggedIn, user } = useAuthState();
   const lists = useStore((state: any) => state.lists);
   const [filteredLists, setFilteredLists] = useState(lists);
@@ -48,6 +49,10 @@ function Home() {
   const openDeleteModal = () => {
     setDeleteModalIsOpen(true);
   }
+
+  useEffect(() => {
+    nullCurrentList();
+  }, [])
 
   useEffect(() => {
     if(filteredLists.length > 0){

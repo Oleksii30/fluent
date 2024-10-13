@@ -28,7 +28,7 @@ const useStore = create<State>((set, get) => ({
  all: async (userId: string) => {
   try {
     const response = await axios.get(`${URL}?userId=${userId}`);
-    set((state:any) => ({ lists: response.data, currentList: null }));
+    set((state:State) => ({ lists: response.data }));
   }catch(error:any){
     toast.error(error.response.data);
   }
@@ -39,6 +39,7 @@ const useStore = create<State>((set, get) => ({
 
   if(list) {
     set((state:State) => ({ currentList: list }));
+    return
   }
 
   try{

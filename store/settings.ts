@@ -45,7 +45,7 @@ const useSettingsStore = create<State>((set, get) => ({
 		try{
 			const response = await axios.post(`${URL}/settings`, settingsData);
 		}catch(error:any){
-			console.log(error)
+			toast.error('Failed to create');
 		}
 	},
 	updateAutoTranslate: async (userId: string, isAutoTranslate:boolean) => {

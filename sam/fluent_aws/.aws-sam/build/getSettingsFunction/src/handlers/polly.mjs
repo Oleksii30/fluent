@@ -45,14 +45,7 @@ const lambdaHandler = async (event) => {
     SampleRate: "22050",
   };
 
-  let result;
-
-  try{
-    result = await pollyClient.send(new StartSpeechSynthesisTaskCommand(params));
-  }catch(error){
-    await redisClient.disconnect();
-    throw new createError(401, error.message);
-  }
+  const result = await pollyClient.send(new StartSpeechSynthesisTaskCommand(params));
 
   const {OutputUri, TaskStatus} = result.SynthesisTask;
 
