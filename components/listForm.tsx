@@ -3,7 +3,7 @@ import { Howl } from 'howler';
 import EditableInput, { FieldTypes } from './editableInput';
 import IconButton from 'components/buttons/icon';
 import { useForm, useFieldArray } from "react-hook-form";
-import { PlusCircle, X, ArrowRightCircle, Volume2, Circle } from 'react-feather';
+import { PlusCircle, X, ArrowRightCircle, Volume2, Circle, Loader } from 'react-feather';
 import useStore, { State } from 'store/lists';
 import { WordInput, IList } from 'interfaces/list.interface';
 import { useAuthState } from 'context/auth';
@@ -28,6 +28,7 @@ export default function ListForm({ item, isTabletOrMobile }:Props) {
   const languages = useSettingsStore((state: SettingsState) => state.languages);
   const languageToTranslate = useSettingsStore((state: SettingsState) => state.languageToTranslate);
   const changeIsSaving = useStore((state: State) => state.changeIsSaving);
+  const [audioLoadingIndex, setAudioLoadingIndex] = useState<number | null>(null);
   const { control, register, handleSubmit, setFocus, getValues, setValue } = useForm({
     defaultValues:{
       header: item ? item.header : '',
@@ -133,6 +134,7 @@ export default function ListForm({ item, isTabletOrMobile }:Props) {
   }
 
   const handleAudio = async (index:number) => {
+    setAudioLoadingIndex(index);
     const values = getValues();
     const word = values.list[index].word;
 
@@ -141,6 +143,7 @@ export default function ListForm({ item, isTabletOrMobile }:Props) {
     const voiceId = pollyOption?.voiceId || '';
 
     const result = await getAudioUrl(word, code, voiceId);
+    setAudioLoadingIndex(null);
     if(!result){
       return
     }
@@ -201,9 +204,15 @@ export default function ListForm({ item, isTabletOrMobile }:Props) {
                     </div>
                     {showAudio &&
                       <div>
-                        <IconButton size={30} onClick={() => handleAudio(index)}>
-                          <Volume2 size={30}/>
-                        </IconButton>
+                        {audioLoadingIndex === index ?
+                          <div style={{paddingLeft:7, paddingRight:7}}>
+                            <Loader size={30}/>
+                          </div>
+                          :
+                          <IconButton size={30} onClick={() => handleAudio(index)}>
+                            <Volume2 size={30}/>
+                          </IconButton>
+                        }
                       </div>
                     }
                     <IconButton size={30} onClick={() => handleTranslate(index)}>
