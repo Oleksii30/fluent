@@ -184,7 +184,7 @@ export default function ListForm({ item, isTabletOrMobile }:Props) {
           {(fields as Array<WordInput>).map((field, index) => (
               <div key={field.id} className={styles.word_field_container}>
                 <div className={styles.vertical_container}>
-                  <div className={styles.input_container} style={{width:isTabletOrMobile ? 350 : 500}}>
+                  <div className={styles.input_container} style={{width:isTabletOrMobile ? 340 : 500}}>
                     <div style={{marginRight:30}}>
                       <EditableInput
                         register={register}
