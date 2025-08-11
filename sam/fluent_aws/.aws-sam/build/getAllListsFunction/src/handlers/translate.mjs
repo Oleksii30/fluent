@@ -5,7 +5,6 @@ import httpErrorHandler from '@middy/http-error-handler';
 import createError from 'http-errors';
 
 const lambdaHandler = async (event) => {
-
   const word = event.queryStringParameters.word;
   const to = event.queryStringParameters.to;
 

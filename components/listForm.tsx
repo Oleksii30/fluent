@@ -246,7 +246,7 @@ export default function ListForm({ item, isTabletOrMobile }:Props) {
                     </IconButton>
                   </div>
                   <div className={styles.horizontal_container}>
-                    <span className={styles.additional_label}>Associations:</span>
+                    <span className={styles.additional_label}>Synonyms:</span>
                     {field.associations.map((association, associationIndex) => (
                       <div key={association} className={styles.additional_input_container}>
                         <EditableInput
