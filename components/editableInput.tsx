@@ -152,9 +152,17 @@ export default function EditableInput({
     }
   }
 
+  useEffect(() => {
+    const value = getInitialValue();
+
+    if(!value){
+      setIsEditMode(true);
+    }
+  }, [])
+
   useEffect(()=>{
     if(isEditMode){
-      setFocus(fieldName)
+      setFocus(fieldName);
     }
   }, [isEditMode, fieldName, setFocus])
 
