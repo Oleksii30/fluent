@@ -1,17 +1,18 @@
-import { Path, UseFormRegister, FieldError, FieldPath} from "react-hook-form";
+import { Path, UseFormRegister, FieldError, FieldPath, FieldValues} from "react-hook-form";
 import type { FormValues } from "./listForm";
+import { ILogin } from 'interfaces/login.interface';
 
 import styles from 'styles/components/FormField.module.css';
 
-type Props = {
+type Props<T extends FieldValues> = {
 	label: string,
 	type: string,
-	name: FieldPath<FormValues>,
-	register: UseFormRegister<FormValues>,
+	name: FieldPath<T>,
+	register: UseFormRegister<T>,
 	error?: FieldError,
 }
 
-export default function FormField({label, type, name, error, register}:Props) {
+export default function FormField<T extends FieldValues>({label, type, name, error, register}:Props<T>) {
 	return (
 		<div className={styles.field}>
 			<label htmlFor={name} className={styles.label}>{label}</label>
