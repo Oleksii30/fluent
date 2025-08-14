@@ -44,7 +44,7 @@ const useSettingsStore = create<State>((set, get) => ({
 	create: async (settingsData: ISettings) => {
 		try{
 			const response = await axios.post(`${URL}/settings`, settingsData);
-		}catch(error:any){
+		}catch(error){
 			toast.error('Failed to create');
 		}
 	},
@@ -58,7 +58,7 @@ const useSettingsStore = create<State>((set, get) => ({
 			}
 			set((state:State) => ({ isAutoTranslate: isAutoTranslate }));
 			const response = await axios.put(`${URL}/settings`, body);
-		}catch(error:any){
+		}catch(error){
 			toast.error('Failed to update');
 		}
 	},
@@ -74,7 +74,7 @@ const useSettingsStore = create<State>((set, get) => ({
 			const response = await axios.put(`${URL}/settings`, body);
 			set((state:State) => ({ languages: body.languages }));
 			set((state:State) => ({ isSaving: false }));
-		}catch(error:any){
+		}catch(error){
 			set((state:State) => ({ isSaving: false }));
 			toast.error('Failed to update');
 		}
@@ -91,7 +91,7 @@ const useSettingsStore = create<State>((set, get) => ({
 			const response = await axios.put(`${URL}/settings`, body);
 			set((state:State) => ({ languages: body.languages }));
 			set((state:State) => ({ isSaving: false }));
-		}catch(error:any){
+		}catch(error){
 			set((state:State) => ({ isSaving: false }));
 			toast.error('Failed to update');
 		}
@@ -108,7 +108,7 @@ const useSettingsStore = create<State>((set, get) => ({
 			const response = await axios.put(`${URL}/settings`, body);
 			set((state:State) => ({ languageToTranslate: language }));
 			set((state:State) => ({ isSaving: false }));
-		}catch(error:any){
+		}catch(error){
 			set((state:State) => ({ isSaving: false }));
 			toast.error('Failed to update');
 		}

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useAuthState } from 'context/auth';
 import useSettingsStore, { State as SettingsState } from 'store/settings';
-import Select from 'react-select';
+import Select, { SingleValue } from 'react-select';
 import { options } from "../../constants/languageOptions";
 import IconButton from 'components/buttons/icon';
 import { Plus } from 'react-feather';
@@ -11,15 +11,24 @@ import { useIsServerSideMobile } from 'context/serverSideMobile';
 
 import styles from 'styles/components/Language.module.css';
 
+type Option = {
+	label: string;
+	value: string;
+	nativeName: string;
+}
+
 export default function Language() {
-	const [selectValue, setSelectValue] = useState();
+	const [selectValue, setSelectValue] = useState<string | undefined>();
 	const { user } = useAuthState();
   const languages = useSettingsStore((state: SettingsState) => state.languages);
 	const addLanguage = useSettingsStore((state: SettingsState) => state.addLanguage);
 
 	const isTabletOrMobile = useIsServerSideMobile();
 
-	const handleChange = (option:any) => {
+	const handleChange = (option:SingleValue<Option>) => {
+		if(!option){
+			return
+		}
 		setSelectValue(option.value)
 	}
 

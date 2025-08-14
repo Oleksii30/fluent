@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { Howl } from 'howler';
 import EditableInput, { FieldTypes } from './editableInput';
 import IconButton from 'components/buttons/icon';
-import { useForm, useFieldArray } from "react-hook-form";
+import { useForm, useFieldArray, UseFormSetValue, FieldPath, PathValue, FieldValues } from "react-hook-form";
 import { PlusCircle, X, ArrowRightCircle, Volume2, Circle, Loader } from 'react-feather';
 import useStore, { State } from 'store/lists';
 import { WordInput, IList } from 'interfaces/list.interface';
@@ -19,6 +19,19 @@ import Image from 'next/image';
 
 import styles from 'styles/components/ListForm.module.css';
 
+export type FormValues = {
+  header: string;
+  language: string;
+  list: WordInput[];
+};
+
+export type RevertFieldValueFn<T extends FieldValues> = <
+  TName extends FieldPath<T>
+>(
+  fieldName: TName,
+  value: any
+) => void;
+
 type Props = {
   item: IList | null;
   isTabletOrMobile: boolean;
@@ -29,7 +42,7 @@ export default function ListForm({ item, isTabletOrMobile }:Props) {
   const languageToTranslate = useSettingsStore((state: SettingsState) => state.languageToTranslate);
   const changeIsSaving = useStore((state: State) => state.changeIsSaving);
   const [audioLoadingIndex, setAudioLoadingIndex] = useState<number | null>(null);
-  const { control, register, handleSubmit, setFocus, getValues, setValue } = useForm({
+  const { control, register, handleSubmit, setFocus, getValues, setValue } = useForm<FormValues>({
     defaultValues:{
       header: item ? item.header : '',
       language: item ? item.language : 'en',
@@ -56,16 +69,16 @@ export default function ListForm({ item, isTabletOrMobile }:Props) {
     name: "list",
   });
 
-  const revertFieldValue = (fieldName:any, value:string) => {
-    setValue(fieldName, value)
-  }
+  const revertFieldValue: RevertFieldValueFn<FormValues> = (fieldName, value) => {
+    setValue(fieldName, value);
+  };
 
   const { user } = useAuthState()
 
   const updateList = useStore((state: State) => state.update);
   const createList = useStore((state: State) => state.create);
 
-  const submitForm = (data: any) => {
+  const submitForm = (data: FormValues) => {
 
     const body = {
       ...data,
@@ -113,14 +126,20 @@ export default function ListForm({ item, isTabletOrMobile }:Props) {
     update(index, { ...field, associations: [... field.associations, ''] })
   }
 
-  const handleChangeLanguage = (event:any) => {
+  const handleChangeLanguage = (event:ChangeEvent) => {
+    if(!event.target){
+      return
+    }
+
+    const target = event.target as HTMLSelectElement;
+
     const values = getValues();
     const data = {
       ...values,
-      language: event.target.value
+      language: target.value
     }
 
-    setShowAudio(calculateShowAudio(event.target.value));
+    setShowAudio(calculateShowAudio(target.value));
     submitForm(data);
   }
 

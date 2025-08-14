@@ -1,10 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, ChangeEvent, KeyboardEvent } from 'react';
 import { Edit2, X, Save, Delete } from 'react-feather';
 import IconButton from 'components/buttons/icon';
 import { getTranslation } from 'api/translate';
 import { WordInput, IList } from 'interfaces/list.interface';
 import useSettingsStore, { State as SettingsState } from "store/settings";
 import useStore, { State } from 'store/lists';
+import { UseFormSetFocus, UseFormRegister, UseFormGetValues, FieldPath, FieldValues } from "react-hook-form";
+import type { FormValues, RevertFieldValueFn } from './listForm';
 import styles from 'styles/components/EditableInput.module.css';
 
 export enum FieldTypes {
@@ -16,14 +18,14 @@ const minCharsInField = 8;
 const iconColor = 'grey';
 
 type Props = {
-  register: any,
-  fieldName: string,
+  register: UseFormRegister<FormValues>,
+  fieldName: FieldPath<FormValues>,
   placeholder?: string,
-  setFocus:any,
-  submitForm: (data:any) => void,
-  getValues: () => any,
+  setFocus:UseFormSetFocus<FormValues>,
+  submitForm: (data: FormValues) => void,
+  getValues: UseFormGetValues<FormValues>,
   onRemove?: () => void,
-  revertFieldValue: (field:any, value:string) => void,
+  revertFieldValue: RevertFieldValueFn<FormValues>,
   index?: number,
   type?: FieldTypes,
 }
@@ -57,16 +59,17 @@ export default function EditableInput({
       let fieldValue = getValues();
       const crumbs = fieldName.split('.');
       for (let crumb of crumbs) {
+        // @ts-ignore
         fieldValue = fieldValue[crumb];
       }
 
       return fieldValue;
     }
-
+    // @ts-ignore
     return getValues()[fieldName];
   }
 
-  async function pushTranslationToValues(values: IList){
+  async function pushTranslationToValues(values: FormValues){
     const value = getInitialValue();
     const translation = await getTranslation(value, languageToTranslate);
     const list = values.list.map((item:WordInput) => {
@@ -92,7 +95,7 @@ export default function EditableInput({
     setInitValue(getInitialValue());
   }
 
-  const handlePressEnter = (event:any) => {
+  const handlePressEnter = (event:KeyboardEvent) => {
     if(event.key !== 'Enter'){
       return
     }
@@ -133,8 +136,11 @@ export default function EditableInput({
     setFieldWidth(newFieldWidth);
   }
 
-  const handleChange = (event:any) => {
-    setNewFieldWidth(event.target.value);
+  const handleChange = (event:ChangeEvent) => {
+    if(!event.target){
+      return
+    }
+    setNewFieldWidth((event.target as HTMLInputElement).value);
   };
 
   const handleInputClick = () => {

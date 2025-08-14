@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import Modal from 'react-modal';
 import useStore, { State } from 'store/lists';
 import MainButton from 'components/buttons/main';
@@ -34,8 +34,8 @@ const deleteFrase = "delete list";
 export default function ConfirmDelete({ isOpen, closeModal, confirmDelete }:Props) {
   const [isDisabledConfirm, setIsDisabledConfirm] = useState(true);
   const isDeleting = useStore((state: State) => state.isDeleting);
-  const handleInputChange = (event:any) => {
-    const text = event.target.value;
+  const handleInputChange = (event:ChangeEvent) => {
+    const text = (event.target as HTMLInputElement).value;
     if(text !== deleteFrase){
       if(!isDisabledConfirm){
         setIsDisabledConfirm(true);

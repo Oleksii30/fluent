@@ -1,12 +1,13 @@
-import { Path, UseFormRegister, FieldError} from "react-hook-form";
+import { Path, UseFormRegister, FieldError, FieldPath} from "react-hook-form";
+import type { FormValues } from "./listForm";
 
 import styles from 'styles/components/FormField.module.css';
 
 type Props = {
 	label: string,
 	type: string,
-	name: any,
-	register: UseFormRegister<any>,
+	name: FieldPath<FormValues>,
+	register: UseFormRegister<FormValues>,
 	error?: FieldError,
 }
 

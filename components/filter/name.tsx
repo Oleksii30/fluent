@@ -1,3 +1,4 @@
+import { ChangeEvent } from "react"
 
 type Props = {
   name: string,
@@ -5,8 +6,11 @@ type Props = {
 }
 
 export default function Name({ onChangeName, name }:Props) {
-  const handleChange = (event:any) => {
-    onChangeName(event.target.value)
+  const handleChange = (event:ChangeEvent) => {
+    if(!event.target){
+      return
+    }
+    onChangeName((event.target as HTMLInputElement).value)
   }
   return (
 		<input onChange={handleChange} style={{height:38}} value={name}/>

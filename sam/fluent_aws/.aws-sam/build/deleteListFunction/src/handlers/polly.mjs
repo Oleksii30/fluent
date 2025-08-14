@@ -12,11 +12,12 @@ function delay(time) {
 const pollyClient = new PollyClient({ region: "us-west-2" });
 
 const redisClient = createClient({
-  password: 'J35LQr4Fh3O1FoBBTRzKrb4MIPWcIdaL',
-  socket: {
-    host: 'redis-18107.c285.us-west-2-2.ec2.redns.redis-cloud.com',
-    port: 18107
-  }
+    username: 'default',
+    password: 'YkwQSNJSgRnc88TChiIB0dS0LFnHG5r8',
+    socket: {
+        host: 'redis-17498.crce199.us-west-2-2.ec2.redns.redis-cloud.com',
+        port: 17498
+    }
 });
 
 const bucket = process.env.POLLY_BUCKET;

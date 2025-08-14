@@ -20,6 +20,12 @@ export type State = {
   isDeleting: boolean;
 }
 
+type Error = {
+  response: {
+    data: string
+  }
+}
+
 const useStore = create<State>((set, get) => ({
  lists: [],
  currentList: null,
@@ -29,8 +35,8 @@ const useStore = create<State>((set, get) => ({
   try {
     const response = await axios.get(`${URL}?userId=${userId}`);
     set((state:State) => ({ lists: response.data }));
-  }catch(error:any){
-    toast.error(error.response.data);
+  }catch(error){
+    toast.error((error as Error).response.data);
   }
  },
  getById: async (userId: string, listId: string) => {
@@ -45,8 +51,8 @@ const useStore = create<State>((set, get) => ({
   try{
     const response = await axios.get(`${URL}/${listId}?userId=${userId}`);
     set((state:State) => ({ currentList: response.data }));
-  }catch(error:any){
-    toast.error(error.response.data);
+  }catch(error){
+    toast.error((error as Error).response.data);
   }
  },
  create: async (listData:IList) => {
@@ -56,9 +62,9 @@ const useStore = create<State>((set, get) => ({
     const createdList = await axios.get(`${URL}/${listData.createdAt}?userId=${listData.userId}`);
     set((state:State) => ({ isSaving: false }));
     set((state:State) => ({ currentList: createdList.data }));
-  }catch(error:any){
+  }catch(error){
     set((state:State) => ({ isSaving: false }));
-    toast.error(error.response.data);
+    toast.error((error as Error).response.data);
   }
  },
   update: async (listData:IList) => {
@@ -68,9 +74,9 @@ const useStore = create<State>((set, get) => ({
     const list = await axios.get(`${URL}/${listData.createdAt}?userId=${listData.userId}`);
     set((state:State) => ({ isSaving: false }));
     set((state:State) => ({ currentList: list.data }));
-  }catch(error:any){
+  }catch(error){
     set((state:State) => ({ isSaving: false }));
-    toast.error(error.response.data);
+    toast.error((error as Error).response.data);
   }
  },
  delete: async (userId: string, listId: number) => {
@@ -80,9 +86,9 @@ const useStore = create<State>((set, get) => ({
     const response = await axios.get(`${URL}?userId=${userId}`);
     set((state:State) => ({ lists: response.data }));
     set((state:State) => ({ isDeleting: false }));
-  }catch(error:any){
+  }catch(error){
     set((state:State) => ({ isDeleting: false }));
-    toast.error(error.response.data);
+    toast.error((error as Error).response.data);
   }
  },
  nullCurrentList: () => {
@@ -94,8 +100,8 @@ const useStore = create<State>((set, get) => ({
  changeListStatus: async (listData:IList) => {
   try{
     const response = await axios.put(URL, listData);
-  }catch(error:any){
-    toast.error(error.response.data);
+  }catch(error){
+    toast.error((error as Error).response.data);
   }
  },
 }));
