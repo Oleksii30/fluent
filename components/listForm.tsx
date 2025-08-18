@@ -278,7 +278,7 @@ export default function ListForm({ item, isTabletOrMobile }:Props) {
                           index={index}
                           type={FieldTypes.ADDITIONAL}
                           revertFieldValue={revertFieldValue}
-                          placeholder='association'
+                          placeholder='synonym'
                         />
                       </div>
                     ))}
