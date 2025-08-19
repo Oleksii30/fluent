@@ -34,7 +34,7 @@ const checkResultList = (resultList:Array<ResultItem>) => {
   return !resultList.some(item => item.state === AnswerStates.WRONG || item.state === AnswerStates.IDLE);
 }
 
-export default function Learn() {
+export default function Drag() {
   const router = useRouter();
   const { id } = router.query;
   const { user } = useAuthState();
