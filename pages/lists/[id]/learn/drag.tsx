@@ -4,16 +4,15 @@ import { DragDropContext, Droppable } from '@hello-pangea/dnd';
 import Header from 'components/header';
 import useStore, { State } from 'store/lists';
 import { useAuthState } from 'context/auth';
-import VariantCard from 'components/variantCard';
-import WordCard from 'components/wordCard';
+import VariantCard from 'components/cards/variantCard';
+import WordCard from 'components/cards/wordCard';
 import MainButton from 'components/buttons/main';
 import { AnswerStates } from 'enums/answerStates';
 import { Check } from 'react-feather';
+import { AnswerState, shuffle } from './index';
 
 import styles from 'styles/pages/Lists.module.css';
 import { IList } from 'interfaces/list.interface';
-
-type AnswerState = AnswerStates.RIGHT | AnswerStates.WRONG | AnswerStates.IDLE;
 
 export type ResultItem = {
   word: string,
@@ -22,10 +21,6 @@ export type ResultItem = {
 }
 
 const VARIANTS_CONTAINER = 'variants_container';
-
-const shuffle = (array: string[]) => {
-  return array.sort(() => Math.random() - 0.5);
-};
 
 const checkResultList = (resultList:Array<ResultItem>) => {
   if(resultList.length === 0){

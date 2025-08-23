@@ -1,7 +1,7 @@
 import { Droppable } from "@hello-pangea/dnd";
 import styles from 'styles/components/WordCard.module.css';
-import VariantCard from 'components/variantCard';
-import { ResultItem } from 'pages/lists/[id]/learn';
+import VariantCard from 'components/cards/variantCard';
+import { ResultItem } from 'pages/lists/[id]/learn/drag';
 import { AnswerStates } from "enums/answerStates";
 
 type Props = {
@@ -9,8 +9,8 @@ type Props = {
 }
 
 const borderColores = {
-  [AnswerStates.WRONG]: 'red',
-  [AnswerStates.RIGHT]: 'green',
+  [AnswerStates.WRONG]: '#ffcbd1',
+  [AnswerStates.RIGHT]: '#D3D3FF',
   [AnswerStates.IDLE]: 'black'
 }
 

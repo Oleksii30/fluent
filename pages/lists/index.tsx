@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { GetServerSidePropsContext } from "next";
 import Image from 'next/image';
 import Header from 'components/header';
-import ListCard from 'components/listCard';
+import ListCard from 'components/cards/listCard';
 import useStore, { URL, State } from 'store/lists';
 import { useAuthState } from 'context/auth'
 import { IList } from 'interfaces/list.interface';
