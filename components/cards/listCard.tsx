@@ -18,6 +18,8 @@ type Props = {
 export default function ListCard({ list, onDeleteList }:Props) {
   const isTabletOrMobile = useIsServerSideMobile();
 
+  const numberOfLearnedWords = list.list.filter(el => el.isLearned).length;
+
   return (
     <div style={{position:'relative', width: 'fit-content', height: 'fit-content'}}>
       <Link href={`${Routes.LISTS}/${list.createdAt}`}>
@@ -28,10 +30,28 @@ export default function ListCard({ list, onDeleteList }:Props) {
           </div>
           <div className={styles.title}>
             {list.header}
-            {list.isLearned && <div style={{marginLeft: 10, paddingTop: isTabletOrMobile ? 0 : 3}}><Check color='green'/></div>}
+            {list.list.length}
           </div>
         </div>
       </Link>
+        <div style={
+          {
+            position:'absolute',
+            bottom:30,
+            left:30,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: 12,
+            border: '2px solid black',
+            borderRadius: 100,
+            width: 40,
+            height: 40,
+            background: (numberOfLearnedWords && list.list.length === numberOfLearnedWords) ? '#D3D3FF' : 'white'
+          }
+        }>
+        <b>{`${list.list.length}/${numberOfLearnedWords}`}</b>
+      </div>
       <div className={styles.deleteButton}>
         <IconButton size={30} onClick={() => onDeleteList(list.createdAt)}>
           <XSquare size={30}/>

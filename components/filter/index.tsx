@@ -43,7 +43,7 @@ export default function Filter({ items, setItems }:Props) {
 				if(!filter.showNotLearned){
 					return true
 				}
-				return item.isLearned === false
+				return item.list.length !== item.list.filter(el => el.isLearned).length;
 			})
 		setItems(filtered);
 	}, [filter, items])
