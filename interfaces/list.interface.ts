@@ -2,7 +2,8 @@ export type WordInput = {
   id?: string,
   word: string,
   translations: Array<string>,
-  associations: Array<string>
+  associations: Array<string>,
+  isLearned: boolean
 }
 
 export interface IList {

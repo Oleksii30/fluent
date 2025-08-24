@@ -16,6 +16,7 @@ import { getAudioUrl } from 'api/audio';
 import { pollyOptions } from 'constants/pollyOptions';
 import { getTranslation } from 'api/translate';
 import Image from 'next/image';
+import CustomSwitch from './switch';
 
 import styles from 'styles/components/ListForm.module.css';
 
@@ -78,7 +79,7 @@ export default function ListForm({ item, isTabletOrMobile }:Props) {
   const updateList = useStore((state: State) => state.update);
   const createList = useStore((state: State) => state.create);
 
-  const submitForm = (data: FormValues) => {
+  const submitForm = (data: FormValues, shouldUpdateCurrentList?:boolean) => {
 
     const body = {
       ...data,
@@ -88,12 +89,12 @@ export default function ListForm({ item, isTabletOrMobile }:Props) {
       isLearned: false
     }
 
-    item ? updateList(body) : createList(body);
+    item ? updateList(body, shouldUpdateCurrentList) : createList(body);
 
   }
 
   const handleAddField = () => {
-    append({ word: '', translations: [], associations: [] });
+    append({ word: '', translations: [], associations: [], isLearned: false });
   }
 
   const handleRemoveField = (index:number) => {
@@ -150,6 +151,12 @@ export default function ListForm({ item, isTabletOrMobile }:Props) {
     });
 
     return sound
+  }
+
+  const saveIsLearnedResult = (value: boolean, index: number) => {
+    const values = getValues();
+    values.list[index].isLearned = value;
+    submitForm(values, false);
   }
 
   const handleAudio = async (index:number) => {
@@ -241,6 +248,7 @@ export default function ListForm({ item, isTabletOrMobile }:Props) {
                         height={30}
                       />
                     </IconButton>
+                    <CustomSwitch isInitialyChecked={field.isLearned} saveIsLearnedResult={saveIsLearnedResult} index={index}/>
                   </div>
                   <div className={styles.horizontal_container}>
                     <span className={styles.additional_label}>Translations:</span>

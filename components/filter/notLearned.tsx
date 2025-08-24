@@ -2,13 +2,13 @@ import Switch from "react-switch";
 
 type Props = {
 	onChangeNotLearned: (value:boolean) => void;
-  isChecked: boolean
+    isChecked: boolean
 }
 
 export default function NotLearned({ onChangeNotLearned, isChecked }:Props) {
 
 	const handleChange = () => {
-    onChangeNotLearned(!isChecked);
+    	onChangeNotLearned(!isChecked);
 	}
 
 	return (

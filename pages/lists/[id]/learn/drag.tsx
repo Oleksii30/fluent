@@ -109,16 +109,6 @@ export default function Drag() {
   }
 
   useEffect(()=>{
-    const isListChecked = checkResultList(resultList);
-    if(!isListChecked || currentList?.isLearned){
-      return
-    }
-    const body = {...currentList, isLearned: true};
-    setIsListLearned(true);
-    changeListStatus(body as IList);
-  }, [resultList])
-
-  useEffect(()=>{
     if(!currentList){
         return
     }

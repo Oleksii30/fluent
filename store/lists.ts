@@ -11,7 +11,7 @@ export type State = {
   all: (userId: string) => void;
   getById: (userId: string, listId: string) => void;
   create: (listData:IList) => void;
-  update: (listData:IList) => void;
+  update: (listData:IList, shouldUpdateCurrentList?:boolean) => void;
   delete: (userId: string, listId: number) => void;
   nullCurrentList: () => void;
   changeIsSaving: (ISaving:boolean) => void;
@@ -67,13 +67,15 @@ const useStore = create<State>((set, get) => ({
     toast.error((error as Error).response.data);
   }
  },
-  update: async (listData:IList) => {
+  update: async (listData:IList, shouldUpdateCurrentList=true) => {
   try{
     set((state:State) => ({ isSaving: true }));
     const response = await axios.put(URL, listData);
-    const list = await axios.get(`${URL}/${listData.createdAt}?userId=${listData.userId}`);
+    if(shouldUpdateCurrentList){
+      const list = await axios.get(`${URL}/${listData.createdAt}?userId=${listData.userId}`);
+      set((state:State) => ({ currentList: list.data }));
+    }
     set((state:State) => ({ isSaving: false }));
-    set((state:State) => ({ currentList: list.data }));
   }catch(error){
     set((state:State) => ({ isSaving: false }));
     toast.error((error as Error).response.data);
