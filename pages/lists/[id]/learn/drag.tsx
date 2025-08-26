@@ -8,8 +8,9 @@ import VariantCard from 'components/cards/variantCard';
 import WordCard from 'components/cards/wordCard';
 import MainButton from 'components/buttons/main';
 import { AnswerStates } from 'enums/answerStates';
-import { Check } from 'react-feather';
 import { AnswerState, shuffle } from './index';
+import Navigation from 'components/navigation';
+import { Routes } from 'enums/routes';
 
 import styles from 'styles/pages/Lists.module.css';
 import { IList } from 'interfaces/list.interface';
@@ -141,7 +142,12 @@ export default function Drag() {
           <div className={styles.list_container}>
               <div className={styles.list_header}>
                 {currentList.header}
-                {isListLearned && <div style={{marginLeft: 10, paddingTop: 10}}><Check color='green'/></div>}
+                <Navigation
+                  rightLabel='to translations game'
+                  routeRight={(`${Routes.LISTS}/${id}/learn/translationcards` as unknown) as URL}
+                  leftLabel='to the list'
+                  routeLeft={(`${Routes.LISTS}/${id}` as unknown) as URL}
+                />
               </div>
               <MainButton type='button' label='Check' onClick={handleCheck}/>
               <div style={{padding: '20px 0px', width: 350}}>

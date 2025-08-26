@@ -1,9 +1,11 @@
 import Header from 'components/header';
-import { AnswerState, shuffle } from './index';
+import { shuffle } from './index';
 import useStore, { State } from 'store/lists';
 import TranslationCard from 'components/cards/translationCard';
 import { useAuthState } from 'context/auth';
 import { useRouter } from 'next/router';
+import Navigation from 'components/navigation';
+import { Routes } from 'enums/routes';
 
 import styles from 'styles/pages/Lists.module.css';
 import { useEffect, useState } from 'react';
@@ -40,6 +42,10 @@ export default function TranslationCards() {
         <div style={{padding: 20, position: 'relative'}}>
           <div className={styles.list_header} style={{marginLeft:100, marginBottom: 20}}>
             {currentList?.header}
+            <Navigation
+              leftLabel='to the list'
+              routeLeft={(`${Routes.LISTS}/${id}` as unknown) as URL}
+            />
           </div>
           <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'center'}}>
             {bankOfVariants.map(variant => (
@@ -54,7 +60,7 @@ export default function TranslationCards() {
           <div style={
               {
                 position:'fixed',
-                top:100,
+                top:165,
                 right:20,
                 display: 'flex',
                 alignItems: 'center',
