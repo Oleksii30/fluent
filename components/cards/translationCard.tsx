@@ -22,7 +22,7 @@ export default function TranslationCard({ translation, setNumberOfCorrectAnswers
   const isTabletOrMobile = useIsServerSideMobile();
 
   const handleCheckAnswer = () => {
-    const isCorrectAnswer = inputValue === translation.word;
+    const isCorrectAnswer = inputValue.toLocaleLowerCase().trim() === translation.word.toLocaleLowerCase().trim();
     const isPrevAnswerCorrect = answerState === AnswerStates.RIGHT;
     setAnswerState(isCorrectAnswer ? AnswerStates.RIGHT : AnswerStates.WRONG);
     setNumberOfCorrectAnswers(

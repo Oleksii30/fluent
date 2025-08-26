@@ -53,7 +53,7 @@ export default function TranslationCards() {
     <div className={styles.container}>
         <Header/>
         <div style={{padding: 20, position: 'relative'}}>
-          <div className={styles.list_header} style={{marginLeft:isTabletOrMobile ? 40 : 100, marginBottom: 20}}>
+          <div className={styles.list_header} style={{marginLeft:isTabletOrMobile ? 20 : 100, marginBottom: 20}}>
             {currentList?.header}
             {!isTabletOrMobile &&
               <Navigation
