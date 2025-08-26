@@ -11,6 +11,9 @@ import { AnswerStates } from 'enums/answerStates';
 import { AnswerState, shuffle } from './index';
 import Navigation from 'components/navigation';
 import { Routes } from 'enums/routes';
+import { useIsServerSideMobile } from 'context/serverSideMobile';
+import { getIsSsrMobile } from 'helpers/serverSideMobile';
+import { GetServerSidePropsContext } from "next";
 
 import styles from 'styles/pages/Lists.module.css';
 import { IList } from 'interfaces/list.interface';
@@ -30,6 +33,14 @@ const checkResultList = (resultList:Array<ResultItem>) => {
   return !resultList.some(item => item.state === AnswerStates.WRONG || item.state === AnswerStates.IDLE);
 }
 
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  return {
+    props: {
+      isSsrMobile: getIsSsrMobile(context)
+    }
+  };
+}
+
 export default function Drag() {
   const router = useRouter();
   const { id } = router.query;
@@ -42,6 +53,8 @@ export default function Drag() {
   const currentList = useStore((state: State) => state.currentList);
 
   const [isListLearned, setIsListLearned] = useState(false);
+
+  const isTabletOrMobile = useIsServerSideMobile();
 
   const handleDragEnd = (result:any) => {
     const destinationBoxName = result.destination.droppableId;
@@ -142,12 +155,14 @@ export default function Drag() {
           <div className={styles.list_container}>
               <div className={styles.list_header}>
                 {currentList.header}
-                <Navigation
-                  rightLabel='to translations game'
-                  routeRight={(`${Routes.LISTS}/${id}/learn/translationcards` as unknown) as URL}
-                  leftLabel='to the list'
-                  routeLeft={(`${Routes.LISTS}/${id}` as unknown) as URL}
-                />
+                {!isTabletOrMobile &&
+                  <Navigation
+                    rightLabel='to translations game'
+                    routeRight={(`${Routes.LISTS}/${id}/learn/translationcards` as unknown) as URL}
+                    leftLabel='to the list'
+                    routeLeft={(`${Routes.LISTS}/${id}` as unknown) as URL}
+                  />
+                }
               </div>
               <MainButton type='button' label='Check' onClick={handleCheck}/>
               <div style={{padding: '20px 0px', width: 350}}>

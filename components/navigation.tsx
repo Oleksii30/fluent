@@ -19,10 +19,10 @@ export default function Navigation({rightLabel, leftLabel, routeRight, routeLeft
 						<ArrowLeftCircle/>
 					</IconButton>
 				</Link>
-				<span style={{marginRight: 15, marginLeft: 5, fontStyle:'italic'}}>{leftLabel}</span>
+				<span style={{marginRight: 15, marginLeft: 2, fontStyle:'italic'}}>{leftLabel}</span>
 			</>}
 			{routeRight && <>
-				<span style={{marginRight: 5, marginLeft: 15, fontStyle:'italic'}}>{rightLabel}</span>
+				<span style={{marginRight: 2, marginLeft: 15, fontStyle:'italic'}}>{rightLabel}</span>
 				<Link href={routeRight}>
 					<IconButton size={50} onClick={()=>{}}>
 						<ArrowRightCircle/>

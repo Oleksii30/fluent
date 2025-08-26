@@ -6,9 +6,20 @@ import { useAuthState } from 'context/auth';
 import { useRouter } from 'next/router';
 import Navigation from 'components/navigation';
 import { Routes } from 'enums/routes';
+import { useIsServerSideMobile } from 'context/serverSideMobile';
+import { getIsSsrMobile } from 'helpers/serverSideMobile';
+import { GetServerSidePropsContext } from "next";
 
 import styles from 'styles/pages/Lists.module.css';
 import { useEffect, useState } from 'react';
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  return {
+    props: {
+      isSsrMobile: getIsSsrMobile(context)
+    }
+  };
+}
 
 export default function TranslationCards() {
   const router = useRouter();
@@ -18,6 +29,8 @@ export default function TranslationCards() {
   const currentList = useStore((state: State) => state.currentList);
   const [bankOfVariants, setBankOfVariants] = useState<Array<{translation:string, word:string}>>([]);
   const [numberOfCorrectAnswers, setNumberOfCorrectAnswers] = useState(0);
+
+  const isTabletOrMobile = useIsServerSideMobile();
 
   useEffect(() => {
     if(!currentList){
@@ -40,12 +53,14 @@ export default function TranslationCards() {
     <div className={styles.container}>
         <Header/>
         <div style={{padding: 20, position: 'relative'}}>
-          <div className={styles.list_header} style={{marginLeft:100, marginBottom: 20}}>
+          <div className={styles.list_header} style={{marginLeft:isTabletOrMobile ? 40 : 100, marginBottom: 20}}>
             {currentList?.header}
-            <Navigation
-              leftLabel='to the list'
-              routeLeft={(`${Routes.LISTS}/${id}` as unknown) as URL}
-            />
+            {!isTabletOrMobile &&
+              <Navigation
+                leftLabel='to the list'
+                routeLeft={(`${Routes.LISTS}/${id}` as unknown) as URL}
+              />
+            }
           </div>
           <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'center'}}>
             {bankOfVariants.map(variant => (
@@ -60,16 +75,16 @@ export default function TranslationCards() {
           <div style={
               {
                 position:'fixed',
-                top:165,
+                top:isTabletOrMobile ? 90 : 165,
                 right:20,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                fontSize: 20,
+                fontSize: isTabletOrMobile ? 16 : 20,
                 border: '2px solid black',
                 borderRadius: 100,
-                width: 70,
-                height: 70,
+                width: isTabletOrMobile ? 50 : 70,
+                height: isTabletOrMobile ? 50 : 70,
                 background: (numberOfCorrectAnswers && bankOfVariants.length === numberOfCorrectAnswers) ? '#D3D3FF' : 'white'
               }
             }>

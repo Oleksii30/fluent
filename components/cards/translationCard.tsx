@@ -2,6 +2,7 @@ import styles from 'styles/components/TranslationCard.module.css';
 import { AnswerStates } from "enums/answerStates";
 import MainButton from 'components/buttons/main';
 import { useState, Dispatch, SetStateAction, KeyboardEvent } from 'react';
+import { useIsServerSideMobile } from 'context/serverSideMobile';
 
 type Props = {
   translation: {translation:string, word:string};
@@ -17,6 +18,8 @@ const borderColores = {
 export default function TranslationCard({ translation, setNumberOfCorrectAnswers }:Props) {
   const [inputValue, setInputVavue] = useState('');
   const [answerState, setAnswerState] = useState(AnswerStates.IDLE);
+
+  const isTabletOrMobile = useIsServerSideMobile();
 
   const handleCheckAnswer = () => {
     const isCorrectAnswer = inputValue === translation.word;
@@ -42,7 +45,7 @@ export default function TranslationCard({ translation, setNumberOfCorrectAnswers
   return (
     <div
         className={styles.word_container}
-        style={{borderColor: borderColores[answerState]}}
+        style={{borderColor: borderColores[answerState], minWidth: isTabletOrMobile ? 300 : 400}}
     >
         <span className={styles.word_text}>{translation.translation}</span>
         <div>
