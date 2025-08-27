@@ -17,6 +17,7 @@ import { pollyOptions } from 'constants/pollyOptions';
 import { getTranslation } from 'api/translate';
 import Image from 'next/image';
 import CustomSwitch from './switch';
+import { useRouter } from 'next/router';
 
 import styles from 'styles/components/ListForm.module.css';
 
@@ -39,6 +40,9 @@ type Props = {
 }
 
 export default function ListForm({ item, isTabletOrMobile }:Props) {
+  const router = useRouter();
+  const { id } = router.query;
+  const getListByIdFromDB = useStore((state: State) => state.getByIdFromDB);
   const languages = useSettingsStore((state: SettingsState) => state.languages);
   const languageToTranslate = useSettingsStore((state: SettingsState) => state.languageToTranslate);
   const changeIsSaving = useStore((state: State) => state.changeIsSaving);
@@ -188,6 +192,15 @@ export default function ListForm({ item, isTabletOrMobile }:Props) {
     ]
     submitForm(values);
   }
+
+  useEffect(() => {
+    if(!user || !id){
+      return
+    }
+    return () => {
+      getListByIdFromDB(user.username, id as string);
+    }
+  }, [])
 
   return (
       <main className={styles.main}>

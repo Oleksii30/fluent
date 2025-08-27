@@ -10,6 +10,7 @@ export type State = {
   currentList: IList | null;
   all: (userId: string) => void;
   getById: (userId: string, listId: string) => void;
+  getByIdFromDB: (userId: string, listId: string) => void;
   create: (listData:IList) => void;
   update: (listData:IList, shouldUpdateCurrentList?:boolean) => void;
   delete: (userId: string, listId: number) => void;
@@ -48,6 +49,14 @@ const useStore = create<State>((set, get) => ({
     return
   }
 
+  try{
+    const response = await axios.get(`${URL}/${listId}?userId=${userId}`);
+    set((state:State) => ({ currentList: response.data }));
+  }catch(error){
+    toast.error((error as Error).response.data);
+  }
+ },
+ getByIdFromDB: async (userId: string, listId: string) => {
   try{
     const response = await axios.get(`${URL}/${listId}?userId=${userId}`);
     set((state:State) => ({ currentList: response.data }));
